@@ -1,0 +1,13 @@
+{
+  "workspaces": {
+    "packages/core": {
+      "entry":   ["src/index.ts"],
+      "project": ["src/**/*.ts"]
+    },
+    "packages/strudel": {
+      "entry":   ["src/index.ts"],
+      "project": ["src/**/*.ts"]
+    }
+  },
+  "ignoreDependencies": ["tonal"]
+}

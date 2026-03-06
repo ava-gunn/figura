@@ -1,0 +1,21 @@
+{
+  "name": "@harmonics/core",
+  "version": "0.0.1",
+  "type": "module",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types":  "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "test":  "vitest run",
+    "dev":   "tsup src/index.ts --format esm --dts --watch"
+  },
+  "dependencies": {
+    "tonal": "^6.0.0"
+  }
+}
