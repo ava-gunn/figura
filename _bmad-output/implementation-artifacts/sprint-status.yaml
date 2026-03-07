@@ -44,7 +44,7 @@ development_status:
   epic-1: in-progress
   1-1-core-type-definitions-melody-scale-degree-resolution: done
   1-2-chord-bass-degree-resolution: done
-  1-3-expand-harmonic-progression: backlog
+  1-3-expand-harmonic-progression: done
   epic-1-retrospective: optional
 
   # Epic 2: DSL Parsing
