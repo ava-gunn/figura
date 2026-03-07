@@ -1,17 +1,26 @@
 import { describe, it, expect } from "vitest"
 import { parseFigure } from "../../src/dsl/parseFigure.js"
+import type { FigureToken } from "../../src/types/index.js"
+
+/** Narrows a FigureToken to the degree variant, failing the test if it's a rest. */
+function expectDegree(token: FigureToken | undefined): { rest: false; degree: number; anchor: boolean; octaveDown: boolean } {
+  expect(token).toBeDefined()
+  expect(token!.rest).toBe(false)
+  if (token!.rest) throw new Error("unreachable")
+  return token!
+}
 
 describe("parseFigure", () => {
   describe("basic degrees", () => {
     it("parses a single degree", () => {
       expect(parseFigure("1")).toEqual([
-        { degree: 1, anchor: false, octaveDown: false },
+        { rest: false, degree: 1, anchor: false, octaveDown: false },
       ])
     })
 
     it("parses all seven degrees", () => {
       const result = parseFigure("1 2 3 4 5 6 7")
-      expect(result.map(t => t.degree)).toEqual([1, 2, 3, 4, 5, 6, 7])
+      expect(result.map(t => expectDegree(t).degree)).toEqual([1, 2, 3, 4, 5, 6, 7])
     })
 
     it("parses multiple space-separated degrees", () => {
@@ -21,48 +30,50 @@ describe("parseFigure", () => {
 
     it("all non-modified tokens have anchor=false and octaveDown=false", () => {
       const result = parseFigure("2 4 6")
-      result.forEach(t => {
-        expect(t.anchor).toBe(false)
-        expect(t.octaveDown).toBe(false)
-      })
+      for (const t of result) {
+        const d = expectDegree(t)
+        expect(d.anchor).toBe(false)
+        expect(d.octaveDown).toBe(false)
+      }
     })
   })
 
   describe("anchor modifier (*)", () => {
     it("marks a note as anchor", () => {
-      expect(parseFigure("1*")[0]?.anchor).toBe(true)
+      expect(expectDegree(parseFigure("1*")[0]).anchor).toBe(true)
     })
 
     it("does not mark adjacent notes as anchor", () => {
       const result = parseFigure("1* 3 5")
-      expect(result[1]?.anchor).toBe(false)
-      expect(result[2]?.anchor).toBe(false)
+      expect(expectDegree(result[1]).anchor).toBe(false)
+      expect(expectDegree(result[2]).anchor).toBe(false)
     })
 
     it("preserves the degree when anchor is set", () => {
-      expect(parseFigure("5*")[0]?.degree).toBe(5)
+      expect(expectDegree(parseFigure("5*")[0]).degree).toBe(5)
     })
 
     it("supports anchor on any degree", () => {
       for (let d = 1; d <= 7; d++) {
-        expect(parseFigure(`${d}*`)[0]?.anchor).toBe(true)
+        expect(expectDegree(parseFigure(`${d}*`)[0]).anchor).toBe(true)
       }
     })
   })
 
   describe("octave down modifier (-)", () => {
     it("marks a note as octaveDown", () => {
-      expect(parseFigure("1-")[0]?.octaveDown).toBe(true)
+      expect(expectDegree(parseFigure("1-")[0]).octaveDown).toBe(true)
     })
 
     it("preserves the degree when octaveDown is set", () => {
-      expect(parseFigure("3-")[0]?.degree).toBe(3)
+      expect(expectDegree(parseFigure("3-")[0]).degree).toBe(3)
     })
   })
 
   describe("combined modifiers", () => {
     it("parses anchor + octaveDown together", () => {
       expect(parseFigure("1*-")[0]).toEqual({
+        rest: false,
         degree: 1,
         anchor: true,
         octaveDown: true,
@@ -71,6 +82,7 @@ describe("parseFigure", () => {
 
     it("parses octaveDown + anchor in reverse order", () => {
       expect(parseFigure("1-*")[0]).toEqual({
+        rest: false,
         degree: 1,
         anchor: true,
         octaveDown: true,

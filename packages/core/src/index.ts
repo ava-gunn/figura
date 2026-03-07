@@ -2,10 +2,12 @@ export type {
   FigureType,
   FigureToken,
   RhythmToken,
-  RomanChord,
   ResolvedEvent,
   ResolvedFigure,
   HarmonyContext,
+  Progression,
+  ResolveOptions,
+  PositionTrace,
 } from "./types/index.js"
 
 export { parseFigure }   from "./dsl/parseFigure.js"

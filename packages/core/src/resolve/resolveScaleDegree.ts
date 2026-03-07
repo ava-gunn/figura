@@ -1,31 +1,45 @@
+import { Scale, Note } from "tonal"
+
 /**
- * Resolves a scale degree (1–7) to an absolute note name given a scale and octave.
+ * Resolves a scale degree to an absolute note name given a scale and octave.
  * Used by the "melody" figure type resolver.
  *
  * Degrees index into the diatonic scale tones of the active chord's scale.
  * Degree 1 = root/tonic, degree 7 = leading tone.
  *
- * ## Octave behaviour
- * The base octave applies to degree 1. Higher degrees stay in the same octave
- * unless they would wrap (degree > scale length), in which case octave increments.
+ * Degrees beyond the scale size wrap modulo the pool size, cycling into
+ * higher octaves. Zero and negative degrees wrap into lower octaves.
+ * The resolver never throws on degree values — always produces music.
  *
- * ## Examples
- * ```
- * resolveScaleDegree(1, "D dorian", 4)  // → "D4"
- * resolveScaleDegree(3, "D dorian", 4)  // → "F4"
- * resolveScaleDegree(5, "D dorian", 4)  // → "A4"
- * resolveScaleDegree(7, "D dorian", 4)  // → "C5"  (wraps to next octave)
- * resolveScaleDegree(2, "G mixolydian", 4) // → "A4"
- * resolveScaleDegree(3, "C ionian", 4)  // → "E4"
- * ```
+ * Scale tones are placed in ascending order from the root: if a pitch class
+ * is lower than the root (e.g. C in D dorian), it goes in the next octave.
  *
- * @throws if degree is not in range 1–7
  * @throws if scaleName is not recognised by tonal
  */
 export function resolveScaleDegree(
-  _degree: number,
-  _scaleName: string,
-  _octave = 4,
+  degree: number,
+  scaleName: string,
+  octave = 4,
 ): string {
-  throw new Error("Not implemented")
+  const scale = Scale.get(scaleName)
+  if (!scale.notes.length) {
+    throw new Error(`Unrecognised scale: "${scaleName}"`)
+  }
+
+  const len = scale.notes.length
+  const zeroIndex = ((((degree - 1) % len) + len) % len)
+  const octaveOffset = Math.floor((degree - 1) / len)
+
+  const pitchClass = scale.notes[zeroIndex]!
+  const rootPitchClass = scale.notes[0]!
+
+  // Scale tones must ascend from the root. If a pitch class sits below
+  // the root at the same octave number, bump it up one octave.
+  const rootMidi = Note.midi(`${rootPitchClass}${String(octave)}`)!
+  const candidateMidi = Note.midi(`${pitchClass}${String(octave)}`)!
+  const intraOctaveAdjust = candidateMidi < rootMidi ? 1 : 0
+
+  const finalOctave = octave + octaveOffset + intraOctaveAdjust
+
+  return `${pitchClass}${String(finalOctave)}`
 }

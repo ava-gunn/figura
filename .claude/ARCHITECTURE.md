@@ -72,11 +72,11 @@ src/
 
 ```typescript
 FigureType     = "melody" | "chord" | "bass"
-FigureToken    = { degree, anchor, octaveDown }
+FigureToken    = { rest: false, degree, anchor, octaveDown } | { rest: true }
 RhythmToken    = { play, tie, accent, staccato }
-HarmonyContext = { key, chord, scale, roman }
-ResolvedEvent  = { note, degree, anchor, duration, velocity, tie }
-ResolvedFigure = { type, events, notes?, struct?, velocity? }
+HarmonyContext = { key, roman, chord, scale: string[], chordTones: string[] }
+ResolvedEvent  = { note: string, degree, anchor, duration, velocity, tie }  // "~" for rests
+ResolvedFigure = { type, events }
 ```
 
 ## Resolution Rules

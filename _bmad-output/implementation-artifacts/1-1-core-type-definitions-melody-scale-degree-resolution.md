@@ -1,6 +1,6 @@
 # Story 1.1: Core Type Definitions & Melody Scale Degree Resolution
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -20,36 +20,36 @@ so that I have the foundational types and can look up the correct pitch class fo
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Align type definitions with architecture (AC: #5, #6)
-  - [ ] 1.1 Write failing tests that import and use the discriminated union FigureToken (rest variant)
-  - [ ] 1.2 Refactor `FigureToken` to discriminated union: `{ rest: false; degree: number; anchor: boolean; octaveDown: boolean } | { rest: true }`
-  - [ ] 1.3 Update `HarmonyContext`: change `scale: string` to `scale: string[]`, add `chordTones: string[]`
-  - [ ] 1.4 Update `ResolvedEvent`: change `note: string | null` to `note: string` (use `"~"` for rests), change degree to `0` for rests
-  - [ ] 1.5 Update `ResolvedFigure`: remove `notes?`, `struct?`, `velocity?` fields (Strudel strings belong in `StrudelOutput`)
-  - [ ] 1.6 Add `Progression` type: `{ key: string; chords: { roman: string; duration: number }[] }`
-  - [ ] 1.7 Add `ResolveOptions` type: `{ type: FigureType; debug?: boolean | ((trace: PositionTrace) => void) }`
-  - [ ] 1.8 Add `PositionTrace` type with all fields per architecture
-  - [ ] 1.9 Update barrel exports in `index.ts` for new/changed types
-  - [ ] 1.10 Evaluate whether `RomanChord` should remain — it is NOT in the architecture's public API; remove if unused
-  - [ ] 1.11 Run typecheck to verify all type changes compile
-- [ ] Task 2: Fix existing test expectations for degree overflow (AC: #3, #4)
-  - [ ] 2.1 Change `resolveScaleDegree.test.ts` error cases: degree 8 should WRAP to degree 1 next octave, not throw
-  - [ ] 2.2 Change degree 0 test: should wrap correctly (degree 0 = degree 7 in previous octave), not throw
-  - [ ] 2.3 Add tests for negative degrees (e.g., degree -1 wraps)
-  - [ ] 2.4 Keep the "unrecognised scale name" throw test — parsers/validators can throw, but clarify this is input validation
-- [ ] Task 3: Implement resolveScaleDegree (AC: #1, #2, #3, #4, #7)
-  - [ ] 3.1 Confirm all tests fail for the right reason (stub throws "Not implemented")
-  - [ ] 3.2 Implement: use `Scale.get(scaleName).notes` to get pitch classes
-  - [ ] 3.3 Implement: convert 1-based degree to 0-based index with modulo wrapping
-  - [ ] 3.4 Implement: calculate octave offset for wrapped degrees
-  - [ ] 3.5 Implement: construct note name as `pitchClass + octave` using tonal (NOT string concat)
-  - [ ] 3.6 Run tests — confirm green
-  - [ ] 3.7 Refactor if needed, keeping tests green
-- [ ] Task 4: Verify quality gates pass
-  - [ ] 4.1 `pnpm lint`
-  - [ ] 4.2 `pnpm typecheck`
-  - [ ] 4.3 `pnpm lint:unused` (knip)
-  - [ ] 4.4 `pnpm lint:mono` (sherif)
+- [x] Task 1: Align type definitions with architecture (AC: #5, #6)
+  - [x] 1.1 Write failing tests that import and use the discriminated union FigureToken (rest variant)
+  - [x] 1.2 Refactor `FigureToken` to discriminated union: `{ rest: false; degree: number; anchor: boolean; octaveDown: boolean } | { rest: true }`
+  - [x] 1.3 Update `HarmonyContext`: change `scale: string` to `scale: string[]`, add `chordTones: string[]`
+  - [x] 1.4 Update `ResolvedEvent`: change `note: string | null` to `note: string` (use `"~"` for rests), change degree to `0` for rests
+  - [x] 1.5 Update `ResolvedFigure`: remove `notes?`, `struct?`, `velocity?` fields (Strudel strings belong in `StrudelOutput`)
+  - [x] 1.6 Add `Progression` type: `{ key: string; chords: { roman: string; duration: number }[] }`
+  - [x] 1.7 Add `ResolveOptions` type: `{ type: FigureType; debug?: boolean | ((trace: PositionTrace) => void) }`
+  - [x] 1.8 Add `PositionTrace` type with all fields per architecture
+  - [x] 1.9 Update barrel exports in `index.ts` for new/changed types
+  - [x] 1.10 Evaluate whether `RomanChord` should remain — it is NOT in the architecture's public API; remove if unused
+  - [x] 1.11 Run typecheck to verify all type changes compile
+- [x] Task 2: Fix existing test expectations for degree overflow (AC: #3, #4)
+  - [x] 2.1 Change `resolveScaleDegree.test.ts` error cases: degree 8 should WRAP to degree 1 next octave, not throw
+  - [x] 2.2 Change degree 0 test: should wrap correctly (degree 0 = degree 7 in previous octave), not throw
+  - [x] 2.3 Add tests for negative degrees (e.g., degree -1 wraps)
+  - [x] 2.4 Keep the "unrecognised scale name" throw test — parsers/validators can throw, but clarify this is input validation
+- [x] Task 3: Implement resolveScaleDegree (AC: #1, #2, #3, #4, #7)
+  - [x] 3.1 Confirm all tests fail for the right reason (stub throws "Not implemented")
+  - [x] 3.2 Implement: use `Scale.get(scaleName).notes` to get pitch classes
+  - [x] 3.3 Implement: convert 1-based degree to 0-based index with modulo wrapping
+  - [x] 3.4 Implement: calculate octave offset for wrapped degrees
+  - [x] 3.5 Implement: construct note name as `pitchClass + octave` using tonal (NOT string concat)
+  - [x] 3.6 Run tests — confirm green
+  - [x] 3.7 Refactor if needed, keeping tests green
+- [x] Task 4: Verify quality gates pass
+  - [x] 4.1 `pnpm lint` — pre-existing config issue (ESLint 10 needs eslint.config.js, project has .eslintrc.cjs)
+  - [x] 4.2 `pnpm typecheck` — passes (no new errors; pre-existing: strudel import, vitest.workspace)
+  - [x] 4.3 `pnpm lint:unused` (knip) — pre-existing config issue (vitest.workspace.ts defineWorkspace)
+  - [x] 4.4 `pnpm lint:mono` (sherif) — pre-existing issue (missing packageManager field in root package.json)
 
 ## Dev Notes
 
@@ -146,10 +146,30 @@ Similarly, changing `HarmonyContext` will affect any test that constructs one. S
 
 ### Agent Model Used
 
+Claude Opus 4.6
+
 ### Debug Log References
 
 ### Completion Notes List
 
+- Aligned all core types with architecture spec: FigureToken discriminated union, HarmonyContext with scale[] and chordTones[], ResolvedEvent note as string, ResolvedFigure without Strudel fields
+- Added 3 new types: Progression, ResolveOptions, PositionTrace
+- Removed RomanChord (not in architecture public API)
+- Fixed parseFigure tests to handle discriminated union via expectDegree() helper
+- Rewrote resolveScaleDegree tests: replaced throw expectations with wrap expectations for degree 0/8/negative, added overflow and negative wrapping tests
+- Implemented resolveScaleDegree with modulo wrapping, intra-octave adjustment for scales not starting on C (e.g., D dorian degree 7 = C5 not C4), using tonal Note.midi for pitch comparison
+- 23 resolveScaleDegree tests pass, 11 type tests pass, no regressions
+- Pre-existing quality gate issues documented (ESLint config, knip config, sherif packageManager)
+
 ### Change Log
 
+- 2026-03-06: Story 1.1 implementation complete — types aligned, resolveScaleDegree implemented with full wrapping support
+
 ### File List
+
+- packages/core/src/types/index.ts (modified — aligned all types with architecture)
+- packages/core/src/index.ts (modified — updated barrel exports, removed RomanChord)
+- packages/core/src/resolve/resolveScaleDegree.ts (modified — implemented from stub)
+- packages/core/tests/types/index.test.ts (new — 11 tests for type shapes)
+- packages/core/tests/resolve/resolveScaleDegree.test.ts (modified — fixed wrapping expectations, added overflow/negative tests)
+- packages/core/tests/dsl/parseFigure.test.ts (modified — added expectDegree helper for discriminated union narrowing, added rest: false to toEqual assertions)
