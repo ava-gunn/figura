@@ -6,6 +6,8 @@ import type {
   HarmonyContext,
   ResolvedEvent,
   ResolvedFigure,
+  ResolveOptions,
+  PositionTrace,
 } from "../types/index.js"
 
 /**
@@ -153,6 +155,22 @@ function buildAnchorShifts(
   return shiftedAnchors
 }
 
+function emitTrace(
+  debug: boolean | ((trace: PositionTrace) => void) | undefined,
+  trace: PositionTrace,
+): void {
+  if (!debug) return
+  if (typeof debug === "function") {
+    debug(trace)
+  } else {
+    const noteLabel = trace.resolvedNote ?? "~"
+    const suffix = trace.rhythmToken.tie ? " (tie)" : trace.resolvedNote === null ? " (rest)" : ""
+    console.log(
+      `[${String(trace.position)}] ${noteLabel}${suffix} | pool: [${trace.pitchPool.join(",")}] | chord: ${trace.harmony.chord}`,
+    )
+  }
+}
+
 const REST_EVENT: ResolvedEvent = {
   note: "~",
   degree: 0,
@@ -174,17 +192,23 @@ const REST_EVENT: ResolvedEvent = {
  */
 export function resolvePhrase(
   figure: FigureToken[],
-  rhythm: RhythmToken[],
+  rhythm: RhythmToken[] | undefined,
   context: HarmonyContext | HarmonyContext[],
-  type: FigureType,
+  options: FigureType | ResolveOptions,
 ): ResolvedFigure {
+  const type: FigureType = typeof options === "string" ? options : options.type
+  const debug = typeof options === "string" ? undefined : options.debug
+
+  const DEFAULT_PLAY: RhythmToken = { play: true, tie: false, staccato: false, accent: false }
+  const effectiveRhythm = rhythm ?? Array.from({ length: figure.length }, (): RhythmToken => ({ ...DEFAULT_PLAY }))
+
   const contexts = Array.isArray(context) ? context : null
   const singleContext = Array.isArray(context) ? null : context
-  const length = contexts ? contexts.length : lcm(figure.length, rhythm.length)
+  const length = contexts ? contexts.length : lcm(figure.length, effectiveRhythm.length)
   const voiceStrategy = type === "melody" ? "nearest" as const : "nearest-below" as const
 
   // Pre-scan for anchor positions that need shifting due to rest alignment
-  const anchorPositions = buildAnchorShifts(figure, rhythm, length)
+  const anchorPositions = buildAnchorShifts(figure, effectiveRhythm, length)
 
   const events: ResolvedEvent[] = []
   let previousMidi: number | null = null
@@ -192,7 +216,7 @@ export function resolvePhrase(
 
   for (let i = 0; i < length; i++) {
     const fig = figure[i % figure.length]!
-    const rhy = rhythm[i % rhythm.length]!
+    const rhy = effectiveRhythm[i % effectiveRhythm.length]!
     const harm = contexts ? contexts[i]! : singleContext!
     const pool = type === "melody" ? harm.scale : harm.chordTones
     const isAnchor = anchorPositions.has(i)
@@ -200,6 +224,7 @@ export function resolvePhrase(
     // REST — rhythm rest
     if (!rhy.play && !rhy.tie) {
       events.push({ ...REST_EVENT })
+      emitTrace(debug, { position: i, figureToken: fig, rhythmToken: rhy, harmony: harm, pitchPool: pool, resolvedNote: null })
       continue
     }
 
@@ -225,12 +250,14 @@ export function resolvePhrase(
         velocity: 0.8,
         tie: false,
       })
+      emitTrace(debug, { position: i, figureToken: fig, rhythmToken: rhy, harmony: harm, pitchPool: pool, resolvedNote: previousNote ?? null })
       continue
     }
 
     // Figure rest (rhythm says play, but figure is rest)
     if (fig.rest) {
       events.push({ ...REST_EVENT })
+      emitTrace(debug, { position: i, figureToken: fig, rhythmToken: rhy, harmony: harm, pitchPool: pool, resolvedNote: null })
       continue
     }
 
@@ -249,6 +276,7 @@ export function resolvePhrase(
       velocity: rhy.accent ? 1.0 : 0.8,
       tie: false,
     })
+    emitTrace(debug, { position: i, figureToken: fig, rhythmToken: rhy, harmony: harm, pitchPool: pool, resolvedNote })
   }
 
   return { type, events }

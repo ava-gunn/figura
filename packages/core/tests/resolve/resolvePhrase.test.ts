@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest"
+import { describe, it, expect, vi } from "vitest"
 import { resolvePhrase } from "../../src/resolve/resolvePhrase.js"
 import { expandProgression } from "../../src/resolve/expandProgression.js"
 import { parseFigure } from "../../src/dsl/parseFigure.js"
 import { parseRhythm } from "../../src/dsl/parseRhythm.js"
-import type { FigureToken, RhythmToken, HarmonyContext } from "../../src/types/index.js"
+import type { FigureToken, RhythmToken, HarmonyContext, PositionTrace } from "../../src/types/index.js"
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -484,6 +484,162 @@ describe("resolvePhrase", () => {
       expect(result.events[7]).toMatchObject({
         note: "B3", degree: 1, anchor: true, duration: 1, velocity: 0.8, tie: false,
       })
+    })
+  })
+
+  describe("debug mode", () => {
+    it("invokes debug callback for each position with PositionTrace (AC2, AC3)", () => {
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const rhythm = [playToken(), playToken(), playToken()]
+      const traces: PositionTrace[] = []
+
+      resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: (trace) => traces.push(trace) })
+
+      expect(traces).toHaveLength(3)
+      // Check PositionTrace structure for position 0
+      expect(traces[0]!.position).toBe(0)
+      expect(traces[0]!.figureToken).toEqual(degree(1, true))
+      expect(traces[0]!.rhythmToken).toEqual(playToken())
+      expect(traces[0]!.harmony).toEqual(dm7Context())
+      expect(traces[0]!.pitchPool).toEqual(dm7Context().scale)
+      expect(traces[0]!.resolvedNote).toBe("D4")
+    })
+
+    it("includes correct pitchPool and resolvedNote in each trace (AC3)", () => {
+      const figure = [degree(1, true), degree(3)]
+      const rhythm = [playToken(), playToken()]
+      const traces: PositionTrace[] = []
+
+      resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: (trace) => traces.push(trace) })
+
+      // D dorian scale: D, E, F, G, A, B, C
+      expect(traces[0]!.pitchPool).toEqual(["D", "E", "F", "G", "A", "B", "C"])
+      expect(traces[0]!.resolvedNote).toBe("D4")
+      expect(traces[1]!.pitchPool).toEqual(["D", "E", "F", "G", "A", "B", "C"])
+      expect(traces[1]!.resolvedNote).toBe("F4")
+    })
+
+    it("emits resolvedNote: null for rest positions (AC4)", () => {
+      const figure = [degree(1, true), degree(3)]
+      const rhythm = [playToken(), restRhythm()]
+      const traces: PositionTrace[] = []
+
+      resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: (trace) => traces.push(trace) })
+
+      expect(traces).toHaveLength(2)
+      expect(traces[0]!.resolvedNote).toBe("D4")
+      expect(traces[1]!.resolvedNote).toBeNull()
+    })
+
+    it("emits resolvedNote: null for figure rest positions (AC4)", () => {
+      const figure = [degree(1, true), figureRest()]
+      const rhythm = [playToken(), playToken()]
+      const traces: PositionTrace[] = []
+
+      resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: (trace) => traces.push(trace) })
+
+      expect(traces).toHaveLength(2)
+      expect(traces[0]!.resolvedNote).toBe("D4")
+      expect(traces[1]!.resolvedNote).toBeNull()
+    })
+
+    it("accepts ResolveOptions object as 4th parameter (AC6)", () => {
+      const figure = [degree(1, true)]
+      const rhythm = [playToken()]
+      const traces: PositionTrace[] = []
+
+      const result = resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: (trace) => traces.push(trace) })
+
+      expect(result.type).toBe("melody")
+      expect(result.events).toHaveLength(1)
+      expect(result.events[0]!.note).toBe("D4")
+      expect(traces).toHaveLength(1)
+    })
+
+    it("logs to console for each position when debug is true (AC1)", () => {
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {})
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const rhythm = [playToken(), playToken(), playToken()]
+
+      resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: true })
+
+      expect(spy).toHaveBeenCalledTimes(3)
+      // Check that output includes position, pool, and chord info
+      const firstCall = spy.mock.calls[0]![0] as string
+      expect(firstCall).toContain("[0]")
+      expect(firstCall).toContain("D4")
+      expect(firstCall).toContain("Dm7")
+      spy.mockRestore()
+    })
+
+    it("still works with plain FigureType string (backward compat) (AC7)", () => {
+      const figure = [degree(1, true), degree(3)]
+      const rhythm = [playToken(), playToken()]
+
+      // This is the existing API — must still work
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      expect(result.type).toBe("melody")
+      expect(result.events).toHaveLength(2)
+      expect(result.events[0]!.note).toBe("D4")
+      expect(result.events[1]!.note).toBe("F4")
+    })
+
+    it("uses default play tokens when rhythm is undefined (AC5)", () => {
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const traces: PositionTrace[] = []
+
+      // rhythm is undefined — should assume default play tokens
+      const result = resolvePhrase(figure, undefined, dm7Context(), { type: "melody", debug: (trace) => traces.push(trace) })
+
+      expect(result.events).toHaveLength(3)
+      expect(result.events[0]!.note).toBe("D4")
+      expect(result.events[1]!.note).toBe("F4")
+      expect(result.events[2]!.note).toBe("A4")
+      // All rhythm tokens should be default play
+      for (const trace of traces) {
+        expect(trace.rhythmToken).toEqual({ play: true, tie: false, staccato: false, accent: false })
+      }
+    })
+
+    it("emits traces for all LCM positions when figure/rhythm lengths differ (AC8)", () => {
+      // Figure 3 + rhythm 4 → LCM = 12
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const rhythm = [playToken(), playToken(), playToken(), playToken()]
+      const traces: PositionTrace[] = []
+
+      resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: (trace) => traces.push(trace) })
+
+      expect(traces).toHaveLength(12)
+      // Verify positions are sequential 0-11
+      for (let i = 0; i < 12; i++) {
+        expect(traces[i]!.position).toBe(i)
+      }
+    })
+
+    it("does not log when debug is false", () => {
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {})
+      const figure = [degree(1, true), degree(3)]
+      const rhythm = [playToken(), playToken()]
+
+      resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: false })
+
+      expect(spy).not.toHaveBeenCalled()
+      spy.mockRestore()
+    })
+
+    it("emits resolvedNote as sustained note for tie positions", () => {
+      const figure = [degree(1, true), degree(3)]
+      const rhythm = [playToken(), tieToken()]
+      const traces: PositionTrace[] = []
+
+      resolvePhrase(figure, rhythm, dm7Context(), { type: "melody", debug: (trace) => traces.push(trace) })
+
+      expect(traces).toHaveLength(2)
+      // Position 0: normal play → D4
+      expect(traces[0]!.resolvedNote).toBe("D4")
+      // Position 1: tie → sustains D4 (not F4, not null)
+      expect(traces[1]!.resolvedNote).toBe("D4")
     })
   })
 })

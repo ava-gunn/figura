@@ -57,7 +57,7 @@ development_status:
   epic-3: in-progress
   3-1-core-phrase-resolution: done
   3-2-lcm-cycling-anchor-on-rest: done
-  3-3-debug-mode: backlog
+  3-3-debug-mode: done
   epic-3-retrospective: optional
 
   # Epic 4: Strudel Output & Library Validation
