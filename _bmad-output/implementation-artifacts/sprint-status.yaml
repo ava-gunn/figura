@@ -54,8 +54,8 @@ development_status:
   epic-2-retrospective: optional
 
   # Epic 3: Phrase Resolution Pipeline
-  epic-3: backlog
-  3-1-core-phrase-resolution: backlog
+  epic-3: in-progress
+  3-1-core-phrase-resolution: done
   3-2-lcm-cycling-anchor-on-rest: backlog
   3-3-debug-mode: backlog
   epic-3-retrospective: optional
