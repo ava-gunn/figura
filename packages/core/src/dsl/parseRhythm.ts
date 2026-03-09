@@ -31,6 +31,23 @@ import type { RhythmToken } from "../types/index.js"
  * @throws if input is empty
  * @throws if a token is not one of: 1 _ . ~ !
  */
-export function parseRhythm(_input: string): RhythmToken[] {
-  throw new Error("Not implemented")
+export function parseRhythm(input: string): RhythmToken[] {
+  const trimmed = input.trim()
+  if (trimmed.length === 0) {
+    throw new Error("Invalid rhythm DSL: input is empty")
+  }
+
+  const raw = trimmed.split(/\s+/)
+
+  return raw.map((token, index): RhythmToken => {
+    switch (token) {
+      case "1": return { play: true,  tie: false, staccato: false, accent: false }
+      case "_": return { play: false, tie: true,  staccato: false, accent: false }
+      case ".": return { play: true,  tie: false, staccato: true,  accent: false }
+      case "~": return { play: false, tie: false, staccato: false, accent: false }
+      case "!": return { play: true,  tie: false, staccato: false, accent: true  }
+      default:
+        throw new Error(`Invalid rhythm token "${token}" at position ${index}`)
+    }
+  })
 }

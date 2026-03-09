@@ -112,25 +112,51 @@ describe("parseFigure", () => {
     })
   })
 
+  describe("rest token", () => {
+    it("parses a single rest token", () => {
+      expect(parseFigure("~")).toEqual([{ rest: true }])
+    })
+
+    it("parses rest in a mixed phrase", () => {
+      const result = parseFigure("1 ~ 3")
+      expect(result).toHaveLength(3)
+      expect(result[0]).toEqual({ rest: false, degree: 1, anchor: false, octaveDown: false })
+      expect(result[1]).toEqual({ rest: true })
+      expect(result[2]).toEqual({ rest: false, degree: 3, anchor: false, octaveDown: false })
+    })
+  })
+
   describe("error cases", () => {
     it("throws on empty string", () => {
-      expect(() => parseFigure("")).toThrow()
+      expect(() => parseFigure("")).toThrow("input is empty")
     })
 
-    it("throws on degree 0", () => {
-      expect(() => parseFigure("0")).toThrow()
+    it("throws on degree 0 with token and position", () => {
+      expect(() => parseFigure("0")).toThrow('"0" at position 0')
     })
 
-    it("throws on degree 8", () => {
-      expect(() => parseFigure("8")).toThrow()
+    it("throws on degree 8 with token and position", () => {
+      expect(() => parseFigure("8")).toThrow('"8" at position 0')
     })
 
-    it("throws on unrecognised token characters", () => {
-      expect(() => parseFigure("1x")).toThrow()
+    it("throws on unrecognised token characters with token and position", () => {
+      expect(() => parseFigure("1x")).toThrow('"1x" at position 0')
     })
 
     it("throws on whitespace-only string", () => {
-      expect(() => parseFigure("   ")).toThrow()
+      expect(() => parseFigure("   ")).toThrow("input is empty")
+    })
+
+    it("includes correct position for mid-sequence errors", () => {
+      expect(() => parseFigure("1 3 x")).toThrow('"x" at position 2')
+    })
+
+    it("throws on duplicate anchor modifier", () => {
+      expect(() => parseFigure("1**")).toThrow('"1**" at position 0')
+    })
+
+    it("throws on duplicate octaveDown modifier", () => {
+      expect(() => parseFigure("1--")).toThrow('"1--" at position 0')
     })
   })
 })

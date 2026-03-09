@@ -29,6 +29,40 @@ import type { FigureToken } from "../types/index.js"
  * @throws if a degree is not in range 1–7
  * @throws if a token contains unrecognised characters
  */
-export function parseFigure(_input: string): FigureToken[] {
-  throw new Error("Not implemented")
+export function parseFigure(input: string): FigureToken[] {
+  const trimmed = input.trim()
+  if (trimmed.length === 0) {
+    throw new Error("Invalid figure DSL: input is empty")
+  }
+
+  const raw = trimmed.split(/\s+/)
+
+  return raw.map((token, index): FigureToken => {
+    if (token === "~") {
+      return { rest: true }
+    }
+
+    const degreeChar = token[0]
+    const degree = Number(degreeChar)
+
+    if (!Number.isInteger(degree) || degree < 1 || degree > 7) {
+      throw new Error(`Invalid figure token "${token}" at position ${index}`)
+    }
+
+    let anchor = false
+    let octaveDown = false
+
+    for (let i = 1; i < token.length; i++) {
+      const ch = token[i]
+      if (ch === "*" && !anchor) {
+        anchor = true
+      } else if (ch === "-" && !octaveDown) {
+        octaveDown = true
+      } else {
+        throw new Error(`Invalid figure token "${token}" at position ${index}`)
+      }
+    }
+
+    return { rest: false, degree, anchor, octaveDown }
+  })
 }

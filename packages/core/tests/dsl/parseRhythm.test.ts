@@ -71,19 +71,23 @@ describe("parseRhythm", () => {
 
   describe("error cases", () => {
     it("throws on empty string", () => {
-      expect(() => parseRhythm("")).toThrow()
+      expect(() => parseRhythm("")).toThrow("input is empty")
     })
 
     it("throws on whitespace-only string", () => {
-      expect(() => parseRhythm("   ")).toThrow()
+      expect(() => parseRhythm("   ")).toThrow("input is empty")
     })
 
-    it("throws on unrecognised token", () => {
-      expect(() => parseRhythm("x")).toThrow()
+    it("throws on unrecognised token with token and position", () => {
+      expect(() => parseRhythm("x")).toThrow('"x" at position 0')
     })
 
-    it("throws on multi-character token", () => {
-      expect(() => parseRhythm("11")).toThrow()
+    it("throws on multi-character token with token and position", () => {
+      expect(() => parseRhythm("11")).toThrow('"11" at position 0')
+    })
+
+    it("includes correct position for mid-sequence errors", () => {
+      expect(() => parseRhythm("1 . x")).toThrow('"x" at position 2')
     })
   })
 })
