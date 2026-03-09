@@ -91,6 +91,68 @@ function resolveDegree(
   return resolvedNote
 }
 
+function gcd(a: number, b: number): number {
+  return b === 0 ? a : gcd(b, a % b)
+}
+
+function lcm(a: number, b: number): number {
+  return (a / gcd(a, b)) * b
+}
+
+/**
+ * Pre-scans figure and rhythm arrays for anchor positions that align with
+ * rests, and shifts the anchor flag to the nearest non-rest played position.
+ */
+function buildAnchorShifts(
+  figure: FigureToken[],
+  rhythm: RhythmToken[],
+  length: number,
+): Set<number> {
+  const shiftedAnchors = new Set<number>()
+
+  for (let i = 0; i < length; i++) {
+    const fig = figure[i % figure.length]!
+    if (fig.rest || !fig.anchor) continue
+
+    const rhy = rhythm[i % rhythm.length]!
+    const isRest = !rhy.play && !rhy.tie
+
+    if (!isRest) {
+      // Anchor is on a playable position — keep it
+      shiftedAnchors.add(i)
+    } else {
+      // Anchor aligns with rest — shift to nearest non-rest played position
+      // Search forward first, then backward
+      let shifted = false
+      for (let fwd = i + 1; fwd < length; fwd++) {
+        const fwdRhy = rhythm[fwd % rhythm.length]!
+        if (fwdRhy.play && !fwdRhy.tie) {
+          const fwdFig = figure[fwd % figure.length]!
+          if (!fwdFig.rest) {
+            shiftedAnchors.add(fwd)
+            shifted = true
+            break
+          }
+        }
+      }
+      if (!shifted) {
+        for (let bwd = i - 1; bwd >= 0; bwd--) {
+          const bwdRhy = rhythm[bwd % rhythm.length]!
+          if (bwdRhy.play && !bwdRhy.tie) {
+            const bwdFig = figure[bwd % figure.length]!
+            if (!bwdFig.rest) {
+              shiftedAnchors.add(bwd)
+              break
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return shiftedAnchors
+}
+
 const REST_EVENT: ResolvedEvent = {
   note: "~",
   degree: 0,
@@ -118,8 +180,11 @@ export function resolvePhrase(
 ): ResolvedFigure {
   const contexts = Array.isArray(context) ? context : null
   const singleContext = Array.isArray(context) ? null : context
-  const length = contexts ? contexts.length : Math.max(figure.length, rhythm.length)
+  const length = contexts ? contexts.length : lcm(figure.length, rhythm.length)
   const voiceStrategy = type === "melody" ? "nearest" as const : "nearest-below" as const
+
+  // Pre-scan for anchor positions that need shifting due to rest alignment
+  const anchorPositions = buildAnchorShifts(figure, rhythm, length)
 
   const events: ResolvedEvent[] = []
   let previousMidi: number | null = null
@@ -130,6 +195,7 @@ export function resolvePhrase(
     const rhy = rhythm[i % rhythm.length]!
     const harm = contexts ? contexts[i]! : singleContext!
     const pool = type === "melody" ? harm.scale : harm.chordTones
+    const isAnchor = anchorPositions.has(i)
 
     // REST — rhythm rest
     if (!rhy.play && !rhy.tie) {
@@ -154,7 +220,7 @@ export function resolvePhrase(
       events.push({
         note: previousNote ?? "~",
         degree: fig.rest ? 0 : fig.degree,
-        anchor: !fig.rest && fig.anchor,
+        anchor: isAnchor,
         duration: 1,
         velocity: 0.8,
         tie: false,
@@ -178,7 +244,7 @@ export function resolvePhrase(
     events.push({
       note: resolvedNote,
       degree: fig.degree,
-      anchor: fig.anchor,
+      anchor: isAnchor,
       duration: rhy.staccato ? 0.5 : 1,
       velocity: rhy.accent ? 1.0 : 0.8,
       tie: false,

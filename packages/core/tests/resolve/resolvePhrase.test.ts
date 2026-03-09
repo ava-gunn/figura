@@ -251,7 +251,6 @@ describe("resolvePhrase", () => {
     it("places first note at octave 4 even when anchor is not first (single-pass)", () => {
       // Anchor is at position 2, but single-pass resolves left-to-right:
       // first note always gets octave 4, anchor is voice-led from there.
-      // Full anchor-first resolution is deferred to Story 3.2.
       const figure = [degree(3), degree(5), degree(1, true)]
       const rhythm = [playToken(), playToken(), playToken()]
       const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
@@ -271,6 +270,160 @@ describe("resolvePhrase", () => {
       // Degree 7 in D dorian = C. Nearest to D4 is C4.
       // With octaveDown, it becomes C3
       expect(result.events[1]!.note).toBe("C3")
+    })
+  })
+
+  describe("LCM cycling", () => {
+    it("produces 12 events for figure length 3 and rhythm length 4 (AC1)", () => {
+      // LCM(3, 4) = 12
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const rhythm = [playToken(), playToken(), playToken(), playToken()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      expect(result.events).toHaveLength(12)
+    })
+
+    it("produces 4 events for equal length figure and rhythm (AC2)", () => {
+      const figure = [degree(1, true), degree(3), degree(5), degree(7)]
+      const rhythm = [playToken(), playToken(), playToken(), playToken()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      expect(result.events).toHaveLength(4)
+    })
+
+    it("produces 6 events for figure length 2 and rhythm length 3 (AC3)", () => {
+      // LCM(2, 3) = 6
+      const figure = [degree(1, true), degree(3)]
+      const rhythm = [playToken(), playToken(), playToken()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      expect(result.events).toHaveLength(6)
+    })
+
+    it("uses harmony array length when HarmonyContext[] is provided (AC4)", () => {
+      // Figure 3 + rhythm 4 → LCM would be 12, but harmony array of 8 wins
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const rhythm = [playToken(), playToken(), playToken(), playToken()]
+      const contexts = expandProgression({
+        key: "C",
+        chords: [
+          { roman: "iim7", duration: 4 },
+          { roman: "V7", duration: 4 },
+        ],
+      })
+      const result = resolvePhrase(figure, rhythm, contexts, "melody")
+
+      expect(result.events).toHaveLength(8)
+    })
+
+    it("cycles figure and rhythm correctly through all LCM positions (AC8)", () => {
+      // Figure [1*, 3] + rhythm [play, play, play] → LCM(2,3) = 6
+      // Positions: fig[0],fig[1],fig[0],fig[1],fig[0],fig[1]
+      // Degrees:   1,     3,     1,     3,     1,     3
+      const figure = [degree(1, true), degree(3)]
+      const rhythm = [playToken(), playToken(), playToken()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      expect(result.events).toHaveLength(6)
+      // All events should be pitched notes (no rests), voice-led correctly
+      // Degree 1 = D, degree 3 = F in D dorian
+      // Voice leading chain: D4, F4, D4 (nearest to F4), F4, D4, F4
+      expect(result.events[0]!.note).toBe("D4")
+      expect(result.events[1]!.note).toBe("F4")
+      expect(result.events[2]!.note).toBe("D4")
+      expect(result.events[3]!.note).toBe("F4")
+      expect(result.events[4]!.note).toBe("D4")
+      expect(result.events[5]!.note).toBe("F4")
+      // Degrees cycle
+      expect(result.events[0]!.degree).toBe(1)
+      expect(result.events[1]!.degree).toBe(3)
+      expect(result.events[2]!.degree).toBe(1)
+      expect(result.events[3]!.degree).toBe(3)
+    })
+  })
+
+  describe("anchor-on-rest", () => {
+    it("shifts anchor to nearest played note when anchor aligns with rest (AC5)", () => {
+      // Figure [1*, 3, 5] with rhythm [rest, play, play]
+      // Anchor at position 0, but rhythm is rest → shift anchor to position 1
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const rhythm = [restRhythm(), playToken(), playToken()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      // Position 0: rest event, anchor should be false
+      expect(result.events[0]!.note).toBe("~")
+      expect(result.events[0]!.anchor).toBe(false)
+      // Position 1: should receive the shifted anchor flag
+      expect(result.events[1]!.anchor).toBe(true)
+      // Position 2: normal, no anchor
+      expect(result.events[2]!.anchor).toBe(false)
+    })
+
+    it("handles anchor-on-rest with LCM cycling (AC6)", () => {
+      // Figure [1*, 3, 5] + rhythm [rest, play, play, play] → LCM(3,4) = 12
+      // Anchor positions (fig[0]=1*): 0, 3, 6, 9
+      // Rhythm mapping (i%4): 0→rest, 1→play, 2→play, 3→play
+      // Pos 0: anchor+rest → shift to pos 1
+      // Pos 3: anchor+play → stays at 3
+      // Pos 6: anchor+play → stays at 6
+      // Pos 9: anchor+play → stays at 9
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const rhythm = [restRhythm(), playToken(), playToken(), playToken()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      expect(result.events).toHaveLength(12)
+      // Position 0: rest, anchor shifted away
+      expect(result.events[0]!.note).toBe("~")
+      expect(result.events[0]!.anchor).toBe(false)
+      // Position 1: receives shifted anchor from pos 0
+      expect(result.events[1]!.anchor).toBe(true)
+      // Positions 3, 6, 9: cycling anchors land on play — no shift needed
+      expect(result.events[3]!.anchor).toBe(true)
+      expect(result.events[6]!.anchor).toBe(true)
+      expect(result.events[9]!.anchor).toBe(true)
+      // Rests at positions 4, 8 (rhythm[0]=rest cycling)
+      expect(result.events[4]!.note).toBe("~")
+      expect(result.events[8]!.note).toBe("~")
+    })
+
+    it("shifts anchor backward when no forward playable position exists", () => {
+      // Figure [3, 5, 1*] with rhythm [play, play, rest]
+      // Anchor at position 2, rhythm is rest. Forward search: nothing (end of array).
+      // Backward search: position 1 (play, not rest) → anchor shifts to 1.
+      const figure = [degree(3), degree(5), degree(1, true)]
+      const rhythm = [playToken(), playToken(), restRhythm()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      expect(result.events).toHaveLength(3)
+      expect(result.events[2]!.note).toBe("~")
+      expect(result.events[2]!.anchor).toBe(false)
+      // Anchor shifted backward to position 1
+      expect(result.events[1]!.anchor).toBe(true)
+      expect(result.events[0]!.anchor).toBe(false)
+    })
+
+    it("drops anchor silently when all positions are rests", () => {
+      // Figure [1*, 3] with rhythm [rest, rest] → LCM(2,2) = 2
+      // Anchor at position 0, rhythm is rest. No playable positions exist.
+      const figure = [degree(1, true), degree(3)]
+      const rhythm = [restRhythm(), restRhythm()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      expect(result.events).toHaveLength(2)
+      // Both are rests, anchor has nowhere to go
+      expect(result.events[0]!.anchor).toBe(false)
+      expect(result.events[1]!.anchor).toBe(false)
+    })
+
+    it("does not shift anchor when it does not align with a rest (AC7)", () => {
+      const figure = [degree(1, true), degree(3), degree(5)]
+      const rhythm = [playToken(), playToken(), playToken()]
+      const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
+
+      // Anchor at position 0 with play rhythm — no shift needed
+      expect(result.events[0]!.anchor).toBe(true)
+      expect(result.events[1]!.anchor).toBe(false)
+      expect(result.events[2]!.anchor).toBe(false)
     })
   })
 
@@ -317,9 +470,9 @@ describe("resolvePhrase", () => {
         note: "~", degree: 0, anchor: false, duration: 0, velocity: 0, tie: false,
       })
 
-      // Pos 5: G4 (accent), degree 1
+      // Pos 5: G4 (accent), degree 1, anchor true (shifted from pos 4 where anchor aligned with rest)
       expect(result.events[5]).toMatchObject({
-        note: "G4", degree: 1, anchor: false, duration: 1, velocity: 1.0, tie: false,
+        note: "G4", degree: 1, anchor: true, duration: 1, velocity: 1.0, tie: false,
       })
 
       // Pos 6: B3 (octave down), degree 7, tie true
