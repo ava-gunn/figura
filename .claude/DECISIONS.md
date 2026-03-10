@@ -15,7 +15,7 @@ benefit for this use case. Node 18+ supports ESM natively.
 
 ## Monorepo: core + strudel as separate packages
 
-**Decision:** Two packages — `@harmonics/core` and `@harmonics/strudel`.
+**Decision:** Two packages — `@figura/core` and `@figura/strudel`.
 **Rationale:** Core has no Strudel dependency and could be used with other
 live coding environments (TidalCycles via JavaScript bridge, Sonic Pi, etc).
 Keeping the adapter separate means core is truly portable.

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Harmonics is a **music theory algebra** — it separates musical intent (figures,
+Figura is a **music theory algebra** — it separates musical intent (figures,
 rhythm) from musical context (harmony, key) and resolves them to absolute notes.
 
 Inspired by Synfire (Cognitone), but implemented as a composable TypeScript
@@ -41,7 +41,7 @@ rhythm changes the groove. None of these require touching the other layers.
 
 ## Package Structure
 
-### `@harmonics/core`
+### `@figura/core`
 
 Pure music algebra. Zero runtime dependencies except `tonal`.
 Can run in any JS environment (browser, Node, Deno).
@@ -58,9 +58,9 @@ src/
     resolvePhrase.ts      — orchestrates full resolution pipeline
 ```
 
-### `@harmonics/strudel`
+### `@figura/strudel`
 
-Strudel adapter. Depends on `@harmonics/core`.
+Strudel adapter. Depends on `@figura/core`.
 Converts `ResolvedFigure` to Strudel mini-notation strings.
 
 ```

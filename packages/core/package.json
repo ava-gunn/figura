@@ -1,5 +1,5 @@
 {
-  "name": "@harmonics/core",
+  "name": "@figura/core",
   "version": "0.0.1",
   "type": "module",
   "module": "./dist/index.js",

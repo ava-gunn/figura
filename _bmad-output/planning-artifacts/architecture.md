@@ -5,7 +5,7 @@ status: 'complete'
 completedAt: '2026-03-06'
 inputDocuments:
   - prd.md
-  - product-brief-harmonics-2026-03-06.md
+  - product-brief-figura-2026-03-06.md
   - domain-symbolic-music-representation-research-2026-03-06.md
   - brainstorming-session-2026-03-06-1920.md
   - .claude/ARCHITECTURE.md
@@ -13,7 +13,7 @@ inputDocuments:
   - .claude/DSL.md
   - .claude/DECISIONS.md
 workflowType: 'architecture'
-project_name: 'harmonics'
+project_name: 'figura'
 user_name: 'Ava'
 date: '2026-03-06'
 ---
@@ -49,7 +49,7 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 | Zero side effects | No heap beyond output | Functional style, return new objects |
 | ESM-only | No CJS | Package.json `"type": "module"`, exports map |
 | Single dependency | Only `tonal` in core | Minimal surface area, vendorable if needed |
-| AGPL isolation | Never import Strudel runtime | `@harmonics/strudel` outputs strings only |
+| AGPL isolation | Never import Strudel runtime | `@figura/strudel` outputs strings only |
 | Coverage | 90% lines/functions, 85% branches | TDD-first, every resolution rule tested |
 
 **Scale & Complexity:**
@@ -82,7 +82,7 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 
 ### Existing Foundation (Brownfield)
 
-harmonics is not a greenfield project. The monorepo, toolchain, package structure, and source file layout are already in place. This section documents the existing technical decisions rather than evaluating starter options.
+figura is not a greenfield project. The monorepo, toolchain, package structure, and source file layout are already in place. This section documents the existing technical decisions rather than evaluating starter options.
 
 ### Project Infrastructure
 
@@ -93,7 +93,7 @@ harmonics is not a greenfield project. The monorepo, toolchain, package structur
 
 **Monorepo:**
 - pnpm workspace with `packages/*` glob
-- Two packages: `@harmonics/core` (depends on `tonal ^6.0.0`), `@harmonics/strudel` (depends on `@harmonics/core` via `workspace:*`)
+- Two packages: `@figura/core` (depends on `tonal ^6.0.0`), `@figura/strudel` (depends on `@figura/core` via `workspace:*`)
 - Both at version `0.0.1`
 
 **Build Tooling:**
@@ -211,7 +211,7 @@ function expandProgression(prog: Progression): HarmonyContext[]
 **Decision:** `ResolvedFigure` contains only `type` and `events`. Strudel strings live in `StrudelOutput`, produced by `toMiniNotation()`.
 
 ```typescript
-// @harmonics/core
+// @figura/core
 type ResolvedEvent = {
   note: string
   degree: number
@@ -226,7 +226,7 @@ type ResolvedFigure = {
   events: ResolvedEvent[]
 }
 
-// @harmonics/strudel
+// @figura/strudel
 type StrudelOutput = {
   notes: string
   struct: string
@@ -268,11 +268,11 @@ type ResolveOptions = {
 
 **Decision:** Minimal flat exports from barrel files. No namespace objects, no default exports.
 
-`@harmonics/core` exports:
+`@figura/core` exports:
 - Functions: `parseFigure`, `parseRhythm`, `resolveScaleDegree`, `resolveChordDegree`, `resolvePhrase`, `expandProgression`
 - Types: `FigureType`, `FigureToken`, `RhythmToken`, `HarmonyContext`, `Progression`, `ResolvedEvent`, `ResolvedFigure`, `ResolveOptions`, `PositionTrace`
 
-`@harmonics/strudel` exports:
+`@figura/strudel` exports:
 - Functions: `toMiniNotation`
 - Types: `StrudelOutput`
 
@@ -299,7 +299,7 @@ type ResolveOptions = {
 
 ### Critical Conflict Points Identified
 
-7 areas where AI agents could make different choices when implementing harmonics modules.
+7 areas where AI agents could make different choices when implementing figura modules.
 
 ### Naming Patterns
 
@@ -349,7 +349,7 @@ type ResolveOptions = {
 
 **Music Theory Conventions (tonal alignment):**
 - Note names: uppercase letter + optional accidental + octave number — `"D4"`, `"F#4"`, `"Bb3"`
-- Follow tonal's spelling conventions exactly — never re-spell enharmonics (if tonal says `"Bb"`, use `"Bb"`, not `"A#"`)
+- Follow tonal's spelling conventions exactly — never re-spell enfigura (if tonal says `"Bb"`, use `"Bb"`, not `"A#"`)
 - Chord names: tonal format — `"Dm7"`, `"G7"`, `"Cmaj7"`
 - Scale names: tonal format — `"D dorian"`, `"G mixolydian"`
 - Roman numerals: case-sensitive — `"iim7"` (lowercase = minor), `"V7"` (uppercase = major), `"IM7"`
@@ -413,7 +413,7 @@ type ResolveOptions = {
 ### Complete Project Directory Structure
 
 ```
-harmonics/
+figura/
 ├── .claude/
 │   ├── ARCHITECTURE.md          — package structure & resolution rules
 │   ├── DECISIONS.md             — design decisions with rationale
@@ -436,7 +436,7 @@ harmonics/
 │
 ├── packages/
 │   ├── core/
-│   │   ├── package.json         — @harmonics/core, depends on tonal
+│   │   ├── package.json         — @figura/core, depends on tonal
 │   │   ├── tsconfig.json        — extends base, rootDir: src
 │   │   ├── src/
 │   │   │   ├── index.ts         — public API barrel (re-exports all)
@@ -464,7 +464,7 @@ harmonics/
 │   │           └── expandProgression.test.ts
 │   │
 │   └── strudel/
-│       ├── package.json         — @harmonics/strudel, depends on core
+│       ├── package.json         — @figura/strudel, depends on core
 │       ├── tsconfig.json        — extends base, rootDir: src
 │       ├── src/
 │       │   └── index.ts         — toMiniNotation(ResolvedFigure) → StrudelOutput
@@ -479,7 +479,7 @@ harmonics/
 **Package Boundary (the hard line):**
 
 ```
-@harmonics/core          @harmonics/strudel
+@figura/core          @figura/strudel
 ┌──────────────────┐     ┌──────────────────┐
 │  types/           │     │                  │
 │  dsl/             │────>│  toMiniNotation  │
@@ -488,7 +488,7 @@ harmonics/
 │  tonal (dep)     │     │                  │
 └──────────────────┘     └──────────────────┘
      imports                  imports
-     tonal only               @harmonics/core only
+     tonal only               @figura/core only
 ```
 
 - Core never imports from strudel

@@ -6,7 +6,7 @@ stepsCompleted:
 inputDocuments:
   - _bmad-output/planning-artifacts/prd.md
   - _bmad-output/planning-artifacts/architecture.md
-  - _bmad-output/planning-artifacts/product-brief-harmonics-2026-03-06.md
+  - _bmad-output/planning-artifacts/product-brief-figura-2026-03-06.md
   - _bmad-output/planning-artifacts/research/domain-symbolic-music-representation-research-2026-03-06.md
   - _bmad-output/brainstorming/brainstorming-session-2026-03-06-1920.md
   - .claude/ARCHITECTURE.md
@@ -15,11 +15,11 @@ inputDocuments:
   - .claude/DECISIONS.md
 ---
 
-# harmonics - Epic Breakdown
+# figura - Epic Breakdown
 
 ## Overview
 
-This document provides the complete epic and story breakdown for harmonics, decomposing the requirements from the PRD, Architecture, and supporting design documents into implementable stories.
+This document provides the complete epic and story breakdown for figura, decomposing the requirements from the PRD, Architecture, and supporting design documents into implementable stories.
 
 ## Requirements Inventory
 
@@ -53,9 +53,9 @@ FR25: System can encode rests as ~ in the notes string
 FR26: Composer can enable debug mode on resolution functions to receive per-position trace output
 FR27: Debug mode can display: figure token, active chord, pitch pool, degree lookup, and resolved pitch for each position
 FR28: Debug mode can assume 8th notes when no rhythm DSL is provided
-FR29: Developer can import and use @harmonics/core without any Strudel dependency
-FR30: Developer can import typed functions (parseFigure, parseRhythm, resolvePhrase, resolveScaleDegree, resolveChordDegree) from @harmonics/core
-FR31: Developer can import toMiniNotation from @harmonics/strudel
+FR29: Developer can import and use @figura/core without any Strudel dependency
+FR30: Developer can import typed functions (parseFigure, parseRhythm, resolvePhrase, resolveScaleDegree, resolveChordDegree) from @figura/core
+FR31: Developer can import toMiniNotation from @figura/strudel
 FR32: Developer can access typed data structures (FigureToken, RhythmToken, HarmonyContext, ResolvedEvent, ResolvedFigure) as public exports
 FR33: Developer can use the ResolvedFigure structured data to build custom renderers independent of Strudel
 
@@ -68,8 +68,8 @@ NFR4: Every pitch resolution is deterministic - same inputs always produce same 
 NFR5: Resolution functions are pure: no side effects, no shared mutable state, no implicit dependencies
 NFR6: All resolution rules are covered by unit tests that assert specific pitch class outputs for known inputs
 NFR7: The reference phrase end-to-end test serves as the regression gate for musical correctness
-NFR8: @harmonics/core has zero runtime dependencies except tonal
-NFR9: @harmonics/strudel depends only on @harmonics/core - never imports Strudel runtime code
+NFR8: @figura/core has zero runtime dependencies except tonal
+NFR9: @figura/strudel depends only on @figura/core - never imports Strudel runtime code
 NFR10: Package.json exports are validated by publint to ensure correct consumption by bundlers and Node.js
 NFR11: ESM-only output, compatible with browser, Node.js 18+, and Deno
 NFR12: 90% line/function coverage, 85% branch coverage enforced by Vitest
@@ -105,7 +105,7 @@ From Brainstorming/Design Session:
 - First anchor octave: center of range if specified, else octave 4
 
 From Domain Knowledge:
-- Follow tonal's spelling conventions exactly - never re-spell enharmonics
+- Follow tonal's spelling conventions exactly - never re-spell enfigura
 - Use tonal API for all note/chord/scale operations (Scale.get, Chord.get, Note.midi, Note.fromMidi, Note.transpose)
 - Named imports only from tonal; no wildcard imports
 - ESM requires .js extension in import paths (even for .ts source files)
@@ -140,9 +140,9 @@ FR25: Epic 4, Story 4.1 - Rest encoding as ~ in notes string
 FR26: Epic 3, Story 3.3 - Debug mode enable on resolution functions
 FR27: Epic 3, Story 3.3 - Debug per-position trace output
 FR28: Epic 3, Story 3.3 - Debug assumes 8th notes without rhythm DSL
-FR29: Epic 4, Story 4.2 - Standalone @harmonics/core without Strudel dependency
-FR30: Epic 4, Story 4.2 - Typed function imports from @harmonics/core
-FR31: Epic 4, Story 4.2 - toMiniNotation import from @harmonics/strudel
+FR29: Epic 4, Story 4.2 - Standalone @figura/core without Strudel dependency
+FR30: Epic 4, Story 4.2 - Typed function imports from @figura/core
+FR31: Epic 4, Story 4.2 - toMiniNotation import from @figura/strudel
 FR32: Epic 4, Story 4.2 - Public type exports (FigureToken, RhythmToken, etc.)
 FR33: Epic 4, Story 4.2 - ResolvedFigure for custom renderers
 
@@ -161,7 +161,7 @@ Composer can resolve complete musical phrases - combining figures, rhythms, and 
 **FRs covered:** FR15, FR16, FR17, FR18, FR19, FR26, FR27, FR28
 
 ### Epic 4: Strudel Output & Library Validation
-Composer can hear resolved phrases through Strudel, and developers can build on harmonics as a typed npm library. The full pipeline is complete from DSL input to Strudel playback. Includes toMiniNotation output adapter, the reference phrase end-to-end validation test, clean public API barrel exports, and standalone @harmonics/core usage.
+Composer can hear resolved phrases through Strudel, and developers can build on figura as a typed npm library. The full pipeline is complete from DSL input to Strudel playback. Includes toMiniNotation output adapter, the reference phrase end-to-end validation test, clean public API barrel exports, and standalone @figura/core usage.
 **FRs covered:** FR20, FR21, FR22, FR23, FR24, FR25, FR29, FR30, FR31, FR32, FR33
 
 ## Epic 1: Pitch Resolution Engine
@@ -401,7 +401,7 @@ So that I can understand and troubleshoot unexpected resolution results.
 
 ## Epic 4: Strudel Output & Library Validation
 
-Composer can hear resolved phrases through Strudel, and developers can build on harmonics as a typed npm library. The full pipeline is complete from DSL input to Strudel playback. Includes toMiniNotation output adapter, the reference phrase end-to-end validation test, clean public API barrel exports, and standalone @harmonics/core usage.
+Composer can hear resolved phrases through Strudel, and developers can build on figura as a typed npm library. The full pipeline is complete from DSL input to Strudel playback. Includes toMiniNotation output adapter, the reference phrase end-to-end validation test, clean public API barrel exports, and standalone @figura/core usage.
 
 ### Story 4.1: Strudel Mini-Notation Output
 
@@ -435,30 +435,30 @@ So that I can play resolved phrases through Strudel with correct notes, timing, 
 **When** toMiniNotation is called
 **Then** it returns notes: `"D4 D4_ A4 B4/2 ~ G4 B3 B3_"`, struct: `"t f t t f t t f"`, velocity: `"0.8 0.8 0.8 0.8 0 1 0.8 0.8"`
 
-**Given** that @harmonics/strudel imports only from @harmonics/core
+**Given** that @figura/strudel imports only from @figura/core
 **Then** it never imports Strudel runtime code (AGPL isolation)
 
 ### Story 4.2: Public API Surface & End-to-End Validation
 
 As a developer,
 I want clean typed exports from both packages and a reference phrase end-to-end test proving the full pipeline,
-So that I can build on harmonics as a reliable, well-typed library and trust that the resolution pipeline produces musically correct output.
+So that I can build on figura as a reliable, well-typed library and trust that the resolution pipeline produces musically correct output.
 
 **Acceptance Criteria:**
 
-**Given** @harmonics/core
+**Given** @figura/core
 **When** a developer imports it
 **Then** `parseFigure`, `parseRhythm`, `resolvePhrase`, `resolveScaleDegree`, `resolveChordDegree`, and `expandProgression` are available as named exports
 
-**Given** @harmonics/core
+**Given** @figura/core
 **When** a developer imports types
 **Then** `FigureType`, `FigureToken`, `RhythmToken`, `HarmonyContext`, `Progression`, `ResolvedEvent`, `ResolvedFigure`, `ResolveOptions`, and `PositionTrace` are available as type exports
 
-**Given** @harmonics/strudel
+**Given** @figura/strudel
 **When** a developer imports it
 **Then** `toMiniNotation` and `StrudelOutput` are available as exports
 
-**Given** @harmonics/core installed without @harmonics/strudel
+**Given** @figura/core installed without @figura/strudel
 **When** a developer uses parseFigure, resolvePhrase, etc.
 **Then** everything works with zero Strudel dependency
 

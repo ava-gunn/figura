@@ -27,9 +27,9 @@ so that I can play resolved phrases through Strudel with correct notes, timing, 
    - struct: `"t f t t f t t f"`
    - velocity: `"0.8 0.8 0.8 0.8 0 1 0.8 0.8"`
 
-7. **AC7 — AGPL isolation:** Given that @harmonics/strudel imports only from @harmonics/core, then it never imports Strudel runtime code.
+7. **AC7 — AGPL isolation:** Given that @figura/strudel imports only from @figura/core, then it never imports Strudel runtime code.
 
-8. **AC8 — StrudelOutput type exported:** Given @harmonics/strudel, when a developer imports it, then `toMiniNotation` and `StrudelOutput` are available as exports.
+8. **AC8 — StrudelOutput type exported:** Given @figura/strudel, when a developer imports it, then `toMiniNotation` and `StrudelOutput` are available as exports.
 
 9. **AC9 — All existing tests pass (zero regressions):** All 161 existing tests across the monorepo continue to pass with no changes.
 
@@ -75,8 +75,8 @@ so that I can play resolved phrases through Strudel with correct notes, timing, 
   - [x] 5.5 Run tests — confirm green
 
 - [x] Task 6: Verify AGPL isolation (AC: #7)
-  - [x] 6.1 Confirm `packages/strudel/src/index.ts` imports ONLY from `@harmonics/core`
-  - [x] 6.2 Confirm `packages/strudel/package.json` dependencies contain ONLY `@harmonics/core`
+  - [x] 6.1 Confirm `packages/strudel/src/index.ts` imports ONLY from `@figura/core`
+  - [x] 6.2 Confirm `packages/strudel/package.json` dependencies contain ONLY `@figura/core`
   - [x] 6.3 No new dependencies added
 
 - [x] Task 7: Run full test suite and quality gates (AC: #9)
@@ -117,9 +117,9 @@ If `figure.events` is empty, return `{ notes: "", struct: "", velocity: "" }`. T
 ### Architecture Compliance
 
 **Package boundary — the hard line:**
-- `@harmonics/strudel` imports ONLY from `@harmonics/core` (types only)
-- `@harmonics/strudel` NEVER imports `tonal` directly
-- `@harmonics/strudel` NEVER imports Strudel runtime code (AGPL isolation)
+- `@figura/strudel` imports ONLY from `@figura/core` (types only)
+- `@figura/strudel` NEVER imports `tonal` directly
+- `@figura/strudel` NEVER imports Strudel runtime code (AGPL isolation)
 - `toMiniNotation` consumes `ResolvedFigure` and produces plain strings — no music theory logic, no pitch manipulation, pure string formatting
 
 **StrudelOutput type — define in strudel package, not core:**
@@ -148,7 +148,7 @@ No default export. [Source: architecture.md#Naming Patterns]
 ### Library & Framework Requirements
 
 - **No new dependencies.** toMiniNotation is pure string formatting — no libraries needed.
-- **Import only `ResolvedFigure` type** from `@harmonics/core` (already in place).
+- **Import only `ResolvedFigure` type** from `@figura/core` (already in place).
 - **Do NOT import `tonal`** — strudel package has no tonal dependency and must never add one.
 - **Vitest 4.x** — test framework, already configured in strudel package via workspace.
 - **TypeScript strict mode** — all the same strict settings as core apply (`strict`, `noImplicitReturns`, `noUncheckedIndexedAccess`).
@@ -173,7 +173,7 @@ No default export. [Source: architecture.md#Naming Patterns]
 
 **Test file conventions:**
 - Import from source file directly: `import { toMiniNotation } from '../src/index.js'`
-- Import types from core if needed: `import type { ResolvedFigure, ResolvedEvent, FigureType } from '@harmonics/core'`
+- Import types from core if needed: `import type { ResolvedFigure, ResolvedEvent, FigureType } from '@figura/core'`
 - ESM `.js` extension required in relative import paths
 - Use `describe('toMiniNotation')` as the top-level block
 - Use nested `describe` for categories: `describe('individual encodings')`, `describe('reference phrase')`, `describe('edge cases')`
@@ -278,15 +278,15 @@ acae863 feat: forth sprint
 
 | Anti-Pattern | Correct Pattern |
 |---|---|
-| Importing `tonal` in strudel package | Import only `ResolvedFigure` type from `@harmonics/core` |
+| Importing `tonal` in strudel package | Import only `ResolvedFigure` type from `@figura/core` |
 | Look-back logic to find previous note for ties | Read `event.note` directly — resolver already set it to the sustained note |
 | `velocity.toFixed(1)` (floating point formatting) | Map to exact strings: `0` → `"0"`, `1` → `"1"`, else `"0.8"` |
 | Importing Strudel runtime (`@strudel/core`, etc.) | String output only — AGPL isolation |
-| Putting StrudelOutput type in `@harmonics/core` | Define in strudel package — it's a Strudel-specific concern |
+| Putting StrudelOutput type in `@figura/core` | Define in strudel package — it's a Strudel-specific concern |
 | `export default function toMiniNotation` | `export function toMiniNotation` — named exports only |
 | Mutating the input `figure.events` array | Build new arrays, return new object |
 | Using `any` type anywhere | Full strict TypeScript — type everything explicitly |
-| Test file importing from barrel (`@harmonics/strudel`) | Import from source: `import { toMiniNotation } from '../src/index.js'` |
+| Test file importing from barrel (`@figura/strudel`) | Import from source: `import { toMiniNotation } from '../src/index.js'` |
 | Creating a `utils/` directory in strudel | Keep everything in `src/index.ts` — single module, single file |
 
 ### References
@@ -319,7 +319,7 @@ Claude Opus 4.6
 - Tie encoding reads `event.note` directly and appends `_` — no look-back needed since resolver pre-fills sustained note
 - 14 tests written: 5 individual encoding rules, 1 reference phrase (8 events), 8 edge cases (empty, rest-only, consecutive ties, accent+staccato combo, tie+staccato priority, rest+tie, non-melody figure type, StrudelOutput type shape)
 - Reference phrase test validates exact expected output: `"D4 D4_ A4 B4/2 ~ G4 B3 B3_"` / `"t f t t f t t f"` / `"0.8 0.8 0.8 0.8 0 1 0.8 0.8"`
-- AGPL isolation verified: only import is `type { ResolvedFigure }` from `@harmonics/core`, no tonal, no Strudel runtime
+- AGPL isolation verified: only import is `type { ResolvedFigure }` from `@figura/core`, no tonal, no Strudel runtime
 - 175 total tests pass (161 existing + 14 new), zero regressions
 - Strudel package coverage: 100% across all metrics
 - Pre-existing quality gate issues (typecheck, lint, knip) unchanged — no new errors

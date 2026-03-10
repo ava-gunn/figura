@@ -19,7 +19,7 @@ import type {
   PositionTrace,
 } from "../src/index.js"
 
-describe("@harmonics/core public API", () => {
+describe("@figura/core public API", () => {
   describe("function exports", () => {
     it("exports parseFigure as a function", () => {
       expect(typeof parseFigure).toBe("function")

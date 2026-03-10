@@ -1,4 +1,4 @@
-# harmonics
+# figura
 
 A TypeScript music theory algebra for symbolic phrase resolution, targeting
 Strudel as the primary output format. Inspired by Synfire (Cognitone).
@@ -23,8 +23,8 @@ Output: D4  ~  A4  B4/2  ~  ^G4  B3  ~
 
 ## Packages
 
-- `@harmonics/core` — pure music algebra, no Strudel dependency
-- `@harmonics/strudel` — converts resolved output to Strudel mini-notation
+- `@figura/core` — pure music algebra, no Strudel dependency
+- `@figura/strudel` — converts resolved output to Strudel mini-notation
 
 ## Setup
 

@@ -8,17 +8,17 @@ Status: done
 
 As a developer,
 I want clean typed exports from both packages and a reference phrase end-to-end test proving the full pipeline,
-so that I can build on harmonics as a reliable, well-typed library and trust that the resolution pipeline produces musically correct output.
+so that I can build on figura as a reliable, well-typed library and trust that the resolution pipeline produces musically correct output.
 
 ## Acceptance Criteria
 
-1. **AC1 — Core function exports:** Given @harmonics/core, when a developer imports it, then `parseFigure`, `parseRhythm`, `resolvePhrase`, `resolveScaleDegree`, `resolveChordDegree`, and `expandProgression` are available as named exports.
+1. **AC1 — Core function exports:** Given @figura/core, when a developer imports it, then `parseFigure`, `parseRhythm`, `resolvePhrase`, `resolveScaleDegree`, `resolveChordDegree`, and `expandProgression` are available as named exports.
 
-2. **AC2 — Core type exports:** Given @harmonics/core, when a developer imports types, then `FigureType`, `FigureToken`, `RhythmToken`, `HarmonyContext`, `Progression`, `ResolvedEvent`, `ResolvedFigure`, `ResolveOptions`, and `PositionTrace` are available as type exports.
+2. **AC2 — Core type exports:** Given @figura/core, when a developer imports types, then `FigureType`, `FigureToken`, `RhythmToken`, `HarmonyContext`, `Progression`, `ResolvedEvent`, `ResolvedFigure`, `ResolveOptions`, and `PositionTrace` are available as type exports.
 
-3. **AC3 — Strudel exports:** Given @harmonics/strudel, when a developer imports it, then `toMiniNotation` and `StrudelOutput` are available as exports.
+3. **AC3 — Strudel exports:** Given @figura/strudel, when a developer imports it, then `toMiniNotation` and `StrudelOutput` are available as exports.
 
-4. **AC4 — Standalone core usage:** Given @harmonics/core installed without @harmonics/strudel, when a developer uses parseFigure, resolvePhrase, etc., then everything works with zero Strudel dependency.
+4. **AC4 — Standalone core usage:** Given @figura/core installed without @figura/strudel, when a developer uses parseFigure, resolvePhrase, etc., then everything works with zero Strudel dependency.
 
 5. **AC5 — Reference phrase end-to-end:** Given the reference phrase (`1* 3 5 3 2* 1 7- 1*` with rhythm `1 _ 1 . ~ ! 1 _` over `iim7 V7 IM7` in C), when the full pipeline runs (parseFigure → parseRhythm → expandProgression → resolvePhrase → toMiniNotation), then the output matches:
    - notes: `"D4 D4_ A4 B4/2 ~ G4 B3 B3_"`
@@ -33,7 +33,7 @@ so that I can build on harmonics as a reliable, well-typed library and trust tha
 
 - [x] Task 1: Write core API export verification tests (AC: #1, #2)
   - [x] 1.1 Create `packages/core/tests/api-surface.test.ts`
-  - [x] 1.2 Write test: all 6 functions are importable from `@harmonics/core` barrel and are functions
+  - [x] 1.2 Write test: all 6 functions are importable from `@figura/core` barrel and are functions
   - [x] 1.3 Write test: all 9 types are importable (compile-time verification via `import type`)
   - [x] 1.4 Run tests — confirm green (exports already exist in barrel)
 
@@ -45,7 +45,7 @@ so that I can build on harmonics as a reliable, well-typed library and trust tha
 
 - [x] Task 3: Write standalone core usage test (AC: #4)
   - [x] 3.1 In `packages/core/tests/api-surface.test.ts`, write test: parse figure + resolve phrase end-to-end using ONLY core exports (no strudel import)
-  - [x] 3.2 Verify the test uses `parseFigure`, `parseRhythm`, `expandProgression`, `resolvePhrase` — all from `@harmonics/core`
+  - [x] 3.2 Verify the test uses `parseFigure`, `parseRhythm`, `expandProgression`, `resolvePhrase` — all from `@figura/core`
   - [x] 3.3 Assert that `ResolvedFigure` output has correct events (concrete pitches, durations, velocities)
   - [x] 3.4 Run tests — confirm green
 
@@ -91,18 +91,18 @@ so that I can build on harmonics as a reliable, well-typed library and trust tha
 ### Architecture Compliance
 
 **Package boundary — verified in this story:**
-- `@harmonics/core` has ZERO imports from `@harmonics/strudel` or Strudel runtime
-- `@harmonics/core` depends only on `tonal` at runtime
-- `@harmonics/strudel` depends only on `@harmonics/core` (workspace:*)
-- `@harmonics/strudel` never imports `tonal` directly
+- `@figura/core` has ZERO imports from `@figura/strudel` or Strudel runtime
+- `@figura/core` depends only on `tonal` at runtime
+- `@figura/strudel` depends only on `@figura/core` (workspace:*)
+- `@figura/strudel` never imports `tonal` directly
 
 **Public API — complete export list to verify:**
 
-`@harmonics/core` (packages/core/src/index.ts):
+`@figura/core` (packages/core/src/index.ts):
 - Functions: `parseFigure`, `parseRhythm`, `resolveScaleDegree`, `resolveChordDegree`, `resolvePhrase`, `expandProgression`
 - Types: `FigureType`, `FigureToken`, `RhythmToken`, `HarmonyContext`, `Progression`, `ResolvedEvent`, `ResolvedFigure`, `ResolveOptions`, `PositionTrace`
 
-`@harmonics/strudel` (packages/strudel/src/index.ts):
+`@figura/strudel` (packages/strudel/src/index.ts):
 - Functions: `toMiniNotation`
 - Types: `StrudelOutput`
 
@@ -132,7 +132,7 @@ so that I can build on harmonics as a reliable, well-typed library and trust tha
 
 **Core API surface test structure:**
 ```
-describe('@harmonics/core public API')
+describe('@figura/core public API')
   describe('function exports')
     it('exports parseFigure as a function')
     it('exports parseRhythm as a function')
@@ -148,7 +148,7 @@ describe('@harmonics/core public API')
 
 **Strudel API surface test structure:**
 ```
-describe('@harmonics/strudel public API')
+describe('@figura/strudel public API')
   it('exports toMiniNotation as a function')
   it('exports StrudelOutput type')
 ```
@@ -161,7 +161,7 @@ describe('end-to-end pipeline')
 
 **Import conventions for test files:**
 
-For API surface tests, import from the **barrel** (`@harmonics/core` or the package entry point) to verify the public API:
+For API surface tests, import from the **barrel** (`@figura/core` or the package entry point) to verify the public API:
 ```typescript
 // packages/core/tests/api-surface.test.ts
 import {
@@ -174,10 +174,10 @@ import type {
 } from '../src/index.js'
 ```
 
-For the end-to-end test, import core functions from `@harmonics/core` (the workspace package) and strudel from source:
+For the end-to-end test, import core functions from `@figura/core` (the workspace package) and strudel from source:
 ```typescript
 // packages/strudel/tests/end-to-end.test.ts
-import { parseFigure, parseRhythm, expandProgression, resolvePhrase } from '@harmonics/core'
+import { parseFigure, parseRhythm, expandProgression, resolvePhrase } from '@figura/core'
 import { toMiniNotation } from '../src/index.js'
 ```
 
@@ -270,7 +270,7 @@ acae863 feat: forth sprint
 | Writing an end-to-end test with manually constructed events | Use the FULL pipeline: parseFigure → parseRhythm → expandProgression → resolvePhrase → toMiniNotation |
 | Skipping build validation (publint, knip) | Run all quality gates — this story validates the complete package |
 | Adding console.log or debug output in test files | Tests should be clean, assertions-only |
-| Using `@harmonics/strudel` in core tests | Core tests must never import strudel — that's the standalone validation |
+| Using `@figura/strudel` in core tests | Core tests must never import strudel — that's the standalone validation |
 
 ### References
 

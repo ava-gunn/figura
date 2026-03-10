@@ -1,4 +1,4 @@
-import type { ResolvedFigure } from "@harmonics/core"
+import type { ResolvedFigure } from "@figura/core"
 
 export type StrudelOutput = {
   notes: string

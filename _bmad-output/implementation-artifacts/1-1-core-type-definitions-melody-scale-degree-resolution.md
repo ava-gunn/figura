@@ -122,7 +122,7 @@ Similarly, changing `HarmonyContext` will affect any test that constructs one. S
 - [ ] `resolveChordDegree.ts` tests — may reference HarmonyContext, check
 - [ ] `resolvePhrase.ts` stub — ResolvedFigure/ResolvedEvent shape changed
 - [ ] `index.ts` barrel — add new type exports, remove RomanChord if dropped
-- [ ] `@harmonics/strudel` — verify it doesn't reference removed ResolvedFigure fields
+- [ ] `@figura/strudel` — verify it doesn't reference removed ResolvedFigure fields
 
 ### Project Structure Notes
 

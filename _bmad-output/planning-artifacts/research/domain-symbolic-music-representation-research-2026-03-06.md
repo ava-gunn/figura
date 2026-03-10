@@ -5,7 +5,7 @@ workflowType: 'research'
 lastStep: 6
 research_type: 'domain'
 research_topic: 'Symbolic pitch/chord/scale representation systems and computational models for chord progression and voice leading'
-research_goals: 'Understand how existing systems model harmony symbolically and handle chord/voice-leading resolution, to inform harmonics DSL design decisions'
+research_goals: 'Understand how existing systems model harmony symbolically and handle chord/voice-leading resolution, to inform figura DSL design decisions'
 user_name: 'Ava'
 date: '2026-03-06'
 web_research_enabled: true
@@ -24,11 +24,11 @@ source_verification: true
 
 The landscape of symbolic music representation is fragmented across academic tools (music21), open-source JS/TS libraries (Tonal.js, Teoria), commercial composition software (Cognitone Synfire, Opusmodus), and live coding environments (Tidal Cycles/Strudel). Each serves a distinct niche, but no existing JavaScript or TypeScript library offers a complete pipeline from functional harmonic analysis (Roman numerals in a key) through a figure/rhythm DSL to resolved concrete pitches with voice-leading awareness.
 
-This research surveyed the full competitive landscape, standards ecosystem, and technical trends to ground the design of the `harmonics` library. Three findings are most consequential: (1) Cognitone Synfire's architecture — separating parametric "figures" from harmonic context, then reuniting them at rendering time — is the closest conceptual precedent and validates harmonics' core design; (2) HarmonyTok research (2025) confirms that decomposing chords into pitch-class tokens outperforms opaque symbol-level representation, aligning with harmonics' resolution approach; and (3) the explosive growth of LLM-driven symbolic music generation creates immediate demand for well-typed, structured harmonic representations that can serve as both human-facing DSLs and machine-readable tool interfaces.
+This research surveyed the full competitive landscape, standards ecosystem, and technical trends to ground the design of the `figura` library. Three findings are most consequential: (1) Cognitone Synfire's architecture — separating parametric "figures" from harmonic context, then reuniting them at rendering time — is the closest conceptual precedent and validates figura' core design; (2) HarmonyTok research (2025) confirms that decomposing chords into pitch-class tokens outperforms opaque symbol-level representation, aligning with figura' resolution approach; and (3) the explosive growth of LLM-driven symbolic music generation creates immediate demand for well-typed, structured harmonic representations that can serve as both human-facing DSLs and machine-readable tool interfaces.
 
 **Key Findings:**
-- No JS/TS library bridges Roman numeral analysis → figure DSL → resolved pitches (harmonics' exact niche)
-- Synfire's figure/harmony separation model validates harmonics' architecture
+- No JS/TS library bridges Roman numeral analysis → figure DSL → resolved pitches (figura' exact niche)
+- Synfire's figure/harmony separation model validates figura' architecture
 - AI/LLM music generation is driving unprecedented demand for structured symbolic music data
 - The functional programming paradigm (pure functions, immutable data) is the established standard for JS/TS music theory libraries
 - MIT license and Strudel mini-notation output are the correct ecosystem choices
@@ -38,7 +38,7 @@ This research surveyed the full competitive landscape, standards ecosystem, and 
 2. Follow Tonal.js conventions for note/interval naming to reduce friction for JS/TS developers
 3. Adopt RomanText conventions for Roman numeral parsing to align with academic standards
 4. Design for AI-readiness from the start — structured DSL input/typed output is naturally serializable
-5. Keep strict package boundaries (@harmonics/core pure algebra, @harmonics/strudel string output only)
+5. Keep strict package boundaries (@figura/core pure algebra, @figura/strudel string output only)
 
 ## Table of Contents
 
@@ -56,7 +56,7 @@ This research surveyed the full competitive landscape, standards ecosystem, and 
 
 This report surveys the domain of symbolic music representation and computational harmony, examining how existing systems — from academic toolkits (music21) to commercial composition software (Cognitone Synfire) to open-source JS/TS libraries (Tonal.js) — model pitch, chords, scales, and keys, and how they computationally resolve chord progressions and voice leading.
 
-The research was conducted through systematic web searches across academic publications (ISMIR, IJCAI, ICLR), software documentation (Cognitone, Strudel, Tonal.js), market research databases, and standards bodies (W3C Music Notation CG, MIDI.org, MEI). All factual claims are cited with sources. The research goal — informing harmonics' DSL design decisions — guided the analysis toward actionable insights about representation models, resolution architectures, and ecosystem positioning.
+The research was conducted through systematic web searches across academic publications (ISMIR, IJCAI, ICLR), software documentation (Cognitone, Strudel, Tonal.js), market research databases, and standards bodies (W3C Music Notation CG, MIDI.org, MEI). All factual claims are cited with sources. The research goal — informing figura' DSL design decisions — guided the analysis toward actionable insights about representation models, resolution architectures, and ecosystem positioning.
 
 See the full Executive Summary above for key findings and strategic recommendations.
 
@@ -65,7 +65,7 @@ See the full Executive Summary above for key findings and strategic recommendati
 ## Domain Research Scope Confirmation
 
 **Research Topic:** Symbolic pitch/chord/scale representation systems and computational models for chord progression and voice leading
-**Research Goals:** Understand how existing systems model harmony symbolically and handle chord/voice-leading resolution, to inform harmonics DSL design decisions
+**Research Goals:** Understand how existing systems model harmony symbolically and handle chord/voice-leading resolution, to inform figura DSL design decisions
 
 **Domain Research Scope:**
 
@@ -177,7 +177,7 @@ _Barriers to Entry:_ Moderate — deep music theory domain knowledge required, b
 
 _Innovation Pressure:_ High — AI/ML driving rapid evolution. Libraries that can serve as both human-facing DSLs and machine-readable symbolic formats are increasingly valuable.
 
-_Key Gap:_ No existing JS/TS library offers a full pipeline from Roman numeral analysis → figured bass / figure DSL → resolved concrete pitches with voice leading. This is precisely the space harmonics targets.
+_Key Gap:_ No existing JS/TS library offers a full pipeline from Roman numeral analysis → figured bass / figure DSL → resolved concrete pitches with voice leading. This is precisely the space figura targets.
 
 _Source: [Tonal.js docs](https://tonaljs.github.io/tonal/docs), [Strudel mini-notation](https://strudel.cc/learn/mini-notation/), [Cognitone](https://www.cognitone.com/)_
 
@@ -196,7 +196,7 @@ The competitive landscape for symbolic music representation is unusual — it's 
 - Supports RomanText format — a standardized notation for encoding Roman numeral analyses
 - Includes German functional harmony terminology (T, S, D notation)
 - Now has an MCP server integration for AI agent access (2025)
-- **Limitation for harmonics:** Python-only; no JS/TS runtime; analysis-oriented rather than generative
+- **Limitation for figura:** Python-only; no JS/TS runtime; analysis-oriented rather than generative
 
 _Source: [music21 GitHub](https://github.com/cuthbertLab/music21/blob/master/music21/roman.py), [music21 harmonic function docs](https://music21.org/music21docs/moduleReference/moduleAnalysisHarmonicFunction.html), [MCP server](https://github.com/brightlikethelight/music21-mcp-server)_
 
@@ -205,20 +205,20 @@ _Source: [music21 GitHub](https://github.com/cuthbertLab/music21/blob/master/mus
 - Modular npm packages: `@tonaljs/note`, `@tonaljs/chord`, `@tonaljs/scale`, `@tonaljs/chord-detect`, `@tonaljs/key`, `@tonaljs/mode`, `@tonaljs/progression`, `@tonaljs/roman-numeral`
 - Covers notes, intervals, chords (with detection), scales, modes (all Greek modes), keys, and chord progressions
 - Roman numeral parsing and progression support built-in
-- **Limitation for harmonics:** Provides the building blocks (note/chord/scale data) but no resolution pipeline — no concept of "render a figure against a harmonic context" or voice-leading logic. Tonal tells you *what* a chord contains; it doesn't resolve *how* to voice it in context.
+- **Limitation for figura:** Provides the building blocks (note/chord/scale data) but no resolution pipeline — no concept of "render a figure against a harmonic context" or voice-leading logic. Tonal tells you *what* a chord contains; it doesn't resolve *how* to voice it in context.
 
 _Source: [Tonal.js GitHub](https://github.com/tonaljs/tonal), [Tonal.js docs](https://tonaljs.github.io/tonal/docs), [npm](https://www.npmjs.com/package/tonal)_
 
 #### Tier 2: Specialized Tools
 
 **Cognitone Synfire (Commercial, macOS/Windows, from EUR 119)**
-- The closest conceptual precedent to harmonics' resolution model
+- The closest conceptual precedent to figura' resolution model
 - **Figure Notation:** A parametric format independent of pitch and harmony. Figures contain Symbols grouped into Segments. Each segment has an Anchor — the melodically most important symbol, rendered first, with other symbols rendered relative to it
 - **Symbol Types:** Chord (anchor describes a chord interval), Vertical (scale steps relative to current chord's vertical scale), Horizontal (scale steps relative to global key), Pitch (absolute, for percussion), Bass (relative to harmonic context bass note), Relative (anchor as chord, others as vertical offsets)
 - **Dual Scale System:** Vertical scale changes with each chord (modal jazz concept — "scales that work above chords"); Horizontal scale is static relative to the global key
 - **Interpretation Parameter:** Controls voice leading strategy — None, Default (balanced), Adaptive (rhythmically significant notes forced to harmonic strength), Adaptive Dynamic (velocity-weighted)
 - **Rendering:** Maps the entirety of all parameters to MIDI output, breaking melodies into smaller units to stay within instrument playing ranges while retaining melodic shape
-- **Key Insight for harmonics:** Synfire's separation of Figure (expression) from Harmony (context) with configurable rendering/interpretation is architecturally parallel to harmonics' `FigureToken[] + HarmonyContext → ResolvedFigure` pipeline
+- **Key Insight for figura:** Synfire's separation of Figure (expression) from Harmony (context) with configurable rendering/interpretation is architecturally parallel to figura' `FigureToken[] + HarmonyContext → ResolvedFigure` pipeline
 - **Limitation:** Proprietary, closed-source, desktop-only, no API or library usage
 
 _Source: [Synfire Figure Notation](https://docs.cognitone.com/synfire/EN/concepts/Figure.html), [Synfire Harmonization](https://docs.cognitone.com/synfire/EN/concepts/Harmonize.html), [Synfire Rendering](https://docs.cognitone.com/synfire/EN/concepts/Rendering.html), [KVR Audio](https://www.kvraudio.com/product/synfire-by-cognitone)_
@@ -228,7 +228,7 @@ _Source: [Synfire Figure Notation](https://docs.cognitone.com/synfire/EN/concept
 - Chord voicing system: turns chord symbols into voiced chords with configurable voicing dictionaries (including iReal voicings)
 - Voice leading between chords in a progression is handled by voicing selection — choosing voicings that minimize movement between successive chords
 - Tonal functions integrated via `@tonaljs/tonal` for note/chord/scale data
-- **Limitation for harmonics:** Pattern-first, not harmony-first. No Roman numeral → chord resolution; chord symbols are literal, not functional. Voicings are dictionary-based lookups, not algorithmically resolved.
+- **Limitation for figura:** Pattern-first, not harmony-first. No Roman numeral → chord resolution; chord symbols are literal, not functional. Voicings are dictionary-based lookups, not algorithmically resolved.
 
 _Source: [Strudel Voicings](https://strudel.cc/understand/voicings/), [Strudel Tonal Functions](https://strudel.cc/learn/tonal/), [Tidal Cycles Harmony](https://tidalcycles.org/docs/reference/harmony_melody/)_
 
@@ -270,7 +270,7 @@ _Source: [npm](https://www.npmjs.com/package/musictheoryjs)_
 - OPTIC spaces: equivalence under Octave shifts, Permutation, Transposition, Inversion, Cardinality change
 - Chords dividing the octave evenly lie at the center; familiar Western sonorities surround them
 - Python implementations using music21 for routine voice-leading calculations
-- **Relevance to harmonics:** Provides theoretical foundation for "efficient" voice leading — minimizing total pitch movement. Could inform future voice-leading strategies.
+- **Relevance to figura:** Provides theoretical foundation for "efficient" voice leading — minimizing total pitch movement. Could inform future voice-leading strategies.
 
 _Source: [Tymoczko Science paper](https://dmitri.mycpanel.princeton.edu/files/publications/science.pdf), [Tymoczko software](https://dmitri.mycpanel.princeton.edu/software.html), [UC Press cognitive model](https://online.ucpress.edu/mp/article/37/3/208/110120/A-Computational-Cognitive-Model-for-the-Analysis)_
 
@@ -282,7 +282,7 @@ _Source: [Rameau paper](https://www.researchgate.net/publication/242525230_Funct
 
 ### Competitive Positioning Map
 
-| Capability | music21 | Tonal.js | Synfire | Strudel | Teoria | harmonics (target) |
+| Capability | music21 | Tonal.js | Synfire | Strudel | Teoria | figura (target) |
 |---|---|---|---|---|---|---|
 | Language | Python | TypeScript | C++ (closed) | JavaScript | JavaScript | TypeScript |
 | Note/Interval/Scale | Yes | Yes | Yes | Via Tonal.js | Yes | Yes |
@@ -305,14 +305,14 @@ _How each player differentiates:_
 - **Synfire:** Deepest harmony model + commercial polish + real-time prototyping workflow
 - **Strudel:** Live coding UX + pattern composition + browser-based + community
 - **Teoria:** Simplicity + jazz chord parsing robustness
-- **harmonics (target):** Full resolution pipeline in TypeScript — the only library bridging Roman numeral analysis → figure DSL → concrete pitched output → Strudel integration
+- **figura (target):** Full resolution pipeline in TypeScript — the only library bridging Roman numeral analysis → figure DSL → concrete pitched output → Strudel integration
 
 ### Business Models and Value Propositions
 
 _Primary Business Models:_
 - **Open Source / Academic:** music21, Tonal.js, Teoria, Strudel — community-driven, no revenue model
 - **Commercial Desktop:** Synfire (EUR 119–399), Opusmodus (subscription/perpetual) — traditional software licensing
-- **harmonics (target):** Open source library; value proposition is enabling Strudel users and music tool developers to work with functional harmony programmatically
+- **figura (target):** Open source library; value proposition is enabling Strudel users and music tool developers to work with functional harmony programmatically
 
 ### Competitive Dynamics and Entry Barriers
 
@@ -324,7 +324,7 @@ _Barriers to Entry:_
 
 _Switching Costs:_ Low for libraries (npm install); high for Synfire (workflow lock-in, proprietary format)
 
-_Key Opportunity:_ The JS/TS ecosystem has no library that does what music21's Roman numeral + harmonic analysis does in Python, let alone combining it with Synfire-style figure resolution. harmonics can own this gap.
+_Key Opportunity:_ The JS/TS ecosystem has no library that does what music21's Roman numeral + harmonic analysis does in Python, let alone combining it with Synfire-style figure resolution. figura can own this gap.
 
 _Source: [Tonal.js GitHub](https://github.com/tonaljs/tonal), [Cognitone](https://www.cognitone.com/), [Strudel voicings](https://strudel.cc/understand/voicings/), [Opusmodus](https://opusmodus.com/)_
 
@@ -338,7 +338,7 @@ _Source: [Tonal.js GitHub](https://github.com/tonaljs/tonal), [Cognitone](https:
 - MIDI 1.0 (1983) remains the universal standard for note-level music data interchange — 128 notes, 16 channels, velocity, control change
 - MIDI 2.0 (ratified 2020, updated June 2023 to v1.1) introduces: Universal MIDI Packet (UMP) format with 32/64/96/128-bit messages, 256 channels (16 groups x 16), MIDI Capability Inquiry (MIDI-CI) for auto-configuration, property exchange, and profile negotiation
 - MIDI 2.0 is backward-compatible — devices auto-detect and fall back to MIDI 1.0
-- **Relevance to harmonics:** harmonics outputs Strudel mini-notation (which ultimately generates WebAudio/MIDI). Understanding MIDI's note model (pitch as integer 0-127, velocity, channel) grounds the "resolved" end of the pipeline. MIDI 2.0's extended resolution (32-bit pitch) may matter for microtonal extensions.
+- **Relevance to figura:** figura outputs Strudel mini-notation (which ultimately generates WebAudio/MIDI). Understanding MIDI's note model (pitch as integer 0-127, velocity, channel) grounds the "resolved" end of the pipeline. MIDI 2.0's extended resolution (32-bit pitch) may matter for microtonal extensions.
 
 _Source: [MIDI 2.0 Spec Overview](https://amei.or.jp/midistandardcommittee/MIDI2.0/MIDI2.0-DOCS/M2-100-U_v1-1_MIDI_2-0_Specification_Overview.pdf), [MIDI.org](https://midi.org/midi-2-0), [Wikipedia](https://en.wikipedia.org/wiki/MIDI_2.0)_
 
@@ -346,7 +346,7 @@ _Source: [MIDI 2.0 Spec Overview](https://amei.or.jp/midistandardcommittee/MIDI2
 - De facto interchange format between notation editors (Finale, Sibelius, MuseScore, Dorico)
 - XML-based; encodes notes, staves, rests, clefs, dynamics, and layout
 - Optimized for notation interchange, not for analytical or generative use
-- **Relevance to harmonics:** Low direct relevance — harmonics doesn't target notation rendering. However, MusicXML's chord symbol encoding provides a reference for how chord names are standardized.
+- **Relevance to figura:** Low direct relevance — figura doesn't target notation rendering. However, MusicXML's chord symbol encoding provides a reference for how chord names are standardized.
 
 _Source: [W3C Music Notation CG](https://www.w3.org/community/music-notation/)_
 
@@ -355,7 +355,7 @@ _Source: [W3C Music Notation CG](https://www.w3.org/community/music-notation/)_
 - Supports Common Western Notation, mensural (Renaissance), and neume (Medieval) notation with structural semantics, not just visual emulation
 - Used for music metadata catalogs, critical editions, and OMR data interchange
 - MEI schema + MEI Guidelines provide the formal specification
-- **Relevance to harmonics:** MEI's approach to encoding analytical information (harmonic function, Roman numeral annotations) alongside notation is conceptually relevant — harmonics similarly separates the analytical layer (HarmonyContext) from the concrete output.
+- **Relevance to figura:** MEI's approach to encoding analytical information (harmonic function, Roman numeral annotations) alongside notation is conceptually relevant — figura similarly separates the analytical layer (HarmonyContext) from the concrete output.
 
 _Source: [MEI](https://music-encoding.org/about/), [Library of Congress format description](https://www.loc.gov/preservation/digital/formats/fdd/fdd000502.shtml), [MEI GitHub](https://github.com/music-encoding)_
 
@@ -364,7 +364,7 @@ _Source: [MEI](https://music-encoding.org/about/), [Library of Congress format d
 - Aims to fix MusicXML limitations that prevent use as a native software format
 - Still in heavy development as of March 2026 — no stable release yet; version numbering will jump to ~1000 for first stable
 - New co-chair Karim Ratib (also MusicXML spec editor) appointed; next meeting March 17, 2026
-- **Relevance to harmonics:** JSON-based format aligns well with TypeScript tooling. Worth monitoring but not yet stable enough to target.
+- **Relevance to figura:** JSON-based format aligns well with TypeScript tooling. Worth monitoring but not yet stable enough to target.
 
 _Source: [MNX specification](https://w3c.github.io/mnx/docs/), [W3C CG meeting Feb 2026](https://www.w3.org/community/music-notation/2026/02/10/co-chair-meeting-minutes-february-10-2026/)_
 
@@ -373,14 +373,14 @@ _Source: [MNX specification](https://w3c.github.io/mnx/docs/), [W3C CG meeting F
 **RomanText Format**
 - Standardized text format for representing Roman numeral analyses, with associated code library in music21
 - Encodes key, Roman numeral labels, inversions, applied chords, and structural boundaries
-- **Direct relevance to harmonics:** RomanText is the closest existing standard for the kind of harmonic input harmonics accepts. The format's conventions for representing Roman numerals (I, IV, V7, viio6, V/V, bVI) should inform harmonics' parser.
+- **Direct relevance to figura:** RomanText is the closest existing standard for the kind of harmonic input figura accepts. The format's conventions for representing Roman numerals (I, IV, V7, viio6, V/V, bVI) should inform figura' parser.
 
 _Source: [RomanText paper](https://www.academia.edu/42383645/THE_ROMANTEXT_FORMAT_A_FLEXIBLE_AND_STANDARD_METHOD_FOR_REPRESENTING_ROMAN_NUMERAL_ANALYSES)_
 
 **Humdrum / \*\*kern**
 - Long-standing symbolic music encoding for corpus analysis (since 1990s)
 - Text-based; encodes pitch, duration, dynamics with specialized "spines" for different data types
-- **Relevance:** Established precedent for text-based symbolic encoding; harmonics' DSL follows a similar philosophy of compact text representation.
+- **Relevance:** Established precedent for text-based symbolic encoding; figura' DSL follows a similar philosophy of compact text representation.
 
 ### Licensing Considerations
 
@@ -391,10 +391,10 @@ _Source: [RomanText paper](https://www.academia.edu/42383645/THE_ROMANTEXT_FORMA
 | Tonal.js | MIT | Fully permissive; safe to use as dependency or reference |
 | Teoria.js | MIT | Fully permissive |
 | music21 | MIT (since v8) | Permissive; Python-only so no direct dependency |
-| Strudel | AGPL-3.0 | Copyleft — if harmonics links to Strudel at runtime, AGPL may apply. The `@harmonics/strudel` package (which generates mini-notation strings) avoids this by outputting strings rather than importing Strudel code |
+| Strudel | AGPL-3.0 | Copyleft — if figura links to Strudel at runtime, AGPL may apply. The `@figura/strudel` package (which generates mini-notation strings) avoids this by outputting strings rather than importing Strudel code |
 | MusicTheoryJS | MIT | Permissive |
 
-**Recommendation for harmonics:** MIT license aligns with the ecosystem (Tonal.js, Teoria, music21 all use MIT). The `@harmonics/strudel` package should remain a string-output adapter to avoid AGPL contamination from Strudel's codebase.
+**Recommendation for figura:** MIT license aligns with the ecosystem (Tonal.js, Teoria, music21 all use MIT). The `@figura/strudel` package should remain a string-output adapter to avoid AGPL contamination from Strudel's codebase.
 
 _Source: [npm license best practices](https://blog.inedo.com/npm/making-sense-of-npm-package-licenses), [Open source license guide 2026](https://dev.to/juanisidoro/open-source-licenses-which-one-should-you-pick-mit-gpl-apache-agpl-and-more-2026-guide-p90)_
 
@@ -402,7 +402,7 @@ _Source: [npm license best practices](https://blog.inedo.com/npm/making-sense-of
 
 | Risk | Severity | Mitigation |
 |---|---|---|
-| AGPL contamination from Strudel dependency | Medium | Keep @harmonics/strudel as string-output-only; never import Strudel runtime code |
+| AGPL contamination from Strudel dependency | Medium | Keep @figura/strudel as string-output-only; never import Strudel runtime code |
 | MNX format changes before stabilization | Low | Monitor only; don't target MNX until stable release |
 | MIDI 2.0 adoption requiring extended pitch model | Low | Current MIDI 1.0 pitch model (0-127) sufficient; design pitch types to be extensible |
 | RomanText format evolution | Low | Use as reference for parser conventions, not as a hard dependency |
@@ -434,7 +434,7 @@ _Source: [MIDI-LLM survey](https://www.emergentmind.com/topics/midi-llm), [NotaG
 3. Pitch class sets (all notes in the chord)
 4. Pitch class sets with one designated as root
 
-Key finding: **chord spelling methods (pitch-class tokens) achieve higher accuracy and lower perplexity** than symbol-level tokens. This suggests that decomposing chords into constituent pitches — similar to how harmonics resolves chords through its pipeline — is the more computationally tractable representation.
+Key finding: **chord spelling methods (pitch-class tokens) achieve higher accuracy and lower perplexity** than symbol-level tokens. This suggests that decomposing chords into constituent pitches — similar to how figura resolves chords through its pipeline — is the more computationally tractable representation.
 
 _Source: [HarmonyTok](https://www.mdpi.com/2078-2489/16/9/759)_
 
@@ -457,7 +457,7 @@ _Source: [Chord-constrained harmonization](https://arxiv.org/html/2512.07627), [
 
 **Functional Programming Paradigm Dominance:**
 - Tonal.js established the functional programming approach (pure functions, immutable data, data structures over objects) as the standard for JS/TS music theory
-- This aligns perfectly with harmonics' design — pure resolution functions taking immutable context and producing resolved output
+- This aligns perfectly with figura' design — pure resolution functions taking immutable context and producing resolved output
 
 **MCP (Model Context Protocol) Integration:**
 - music21 now has an MCP server (2025), allowing AI agents to perform music analysis through structured tool calls
@@ -471,25 +471,25 @@ _Source: [Strudel](https://strudel.cc/), [Live coding trends](https://aicompeten
 The strongest innovation pattern across the domain is separating musical expression from harmonic context:
 - Synfire: Figure (expression) separated from Harmony (context), reunited at rendering
 - Tidal/Strudel: Pattern structure separated from sound/pitch content
-- harmonics: FigureToken[] + HarmonyContext → ResolvedFigure (same principle, as a library)
+- figura: FigureToken[] + HarmonyContext → ResolvedFigure (same principle, as a library)
 
 **Pattern 2: Compact Text DSLs**
 Every successful tool has a compact text representation:
 - ABC notation (AI/research), mini-notation (live coding), Roman numerals (analysis), figured bass (classical theory)
-- harmonics' figure DSL and rhythm DSL follow this pattern
+- figura' figure DSL and rhythm DSL follow this pattern
 
 **Pattern 3: Pitch-Class Decomposition**
-Research consistently shows that decomposing chords into pitch classes outperforms treating them as opaque symbols — for both AI training and human reasoning. harmonics' resolution pipeline inherently does this: Roman numeral → scale degrees → concrete pitches.
+Research consistently shows that decomposing chords into pitch classes outperforms treating them as opaque symbols — for both AI training and human reasoning. figura' resolution pipeline inherently does this: Roman numeral → scale degrees → concrete pitches.
 
 ### Future Outlook
 
 **Near-term (2026–2027):**
 - MNX (JSON-based music notation) approaching stability — could become the interchange format for browser-native music tools
-- LLM-driven composition tools will need structured symbolic representations as both input and output — libraries like harmonics become essential plumbing
+- LLM-driven composition tools will need structured symbolic representations as both input and output — libraries like figura become essential plumbing
 - Strudel ecosystem growth will increase demand for harmonic intelligence that goes beyond simple chord symbol lookups
 
 **Medium-term (2027–2029):**
-- AI agents using music theory libraries via MCP/tool-use protocols — harmonics could serve as a "harmony reasoning" tool for AI composers
+- AI agents using music theory libraries via MCP/tool-use protocols — figura could serve as a "harmony reasoning" tool for AI composers
 - Voice leading algorithms may shift from rule-based to hybrid (learned + constrained) approaches
 - Real-time collaborative music environments will need shared harmonic state — a typed, functional library is well-suited to this
 
@@ -499,7 +499,7 @@ Research consistently shows that decomposing chords into pitch classes outperfor
 
 _Source: [MNX specification](https://w3c.github.io/mnx/docs/), [AI music generation review](https://www.mdpi.com/2079-9292/14/6/1197), [Computational musicology at Georgia Tech](https://gtcmt.gatech.edu/computational-musicology-research)_
 
-### Implementation Opportunities for harmonics
+### Implementation Opportunities for figura
 
 1. **Strudel integration as first-class output** — the live coding community is the most immediate user base
 2. **Typed, functional API** — matches the dominant paradigm (Tonal.js proved this works); TypeScript types enable IDE-driven exploration of music theory concepts
@@ -512,9 +512,9 @@ _Source: [MNX specification](https://w3c.github.io/mnx/docs/), [AI music generat
 | Challenge | Impact | Mitigation |
 |---|---|---|
 | Music theory complexity — edge cases in enharmonic spelling, modal mixture, chromatic harmony | High | Comprehensive test suite; TDD approach catches edge cases early |
-| Competing with established tools (Tonal.js for primitives, music21 for analysis) | Medium | Don't compete — complement. harmonics uses Tonal-level primitives to do something neither tool does |
-| AI-generated music may reduce demand for human-facing DSLs | Low | AI tools still need structured symbolic formats; harmonics serves both humans and AI |
-| Scope creep into notation/audio rendering | Medium | Strict boundary: @harmonics/core is pure algebra, @harmonics/strudel is string output only |
+| Competing with established tools (Tonal.js for primitives, music21 for analysis) | Medium | Don't compete — complement. figura uses Tonal-level primitives to do something neither tool does |
+| AI-generated music may reduce demand for human-facing DSLs | Low | AI tools still need structured symbolic formats; figura serves both humans and AI |
+| Scope creep into notation/audio rendering | Medium | Strict boundary: @figura/core is pure algebra, @figura/strudel is string output only |
 
 ## Recommendations
 
@@ -529,13 +529,13 @@ _Source: [MNX specification](https://w3c.github.io/mnx/docs/), [AI music generat
 
 1. **Phase 1 (Core):** Resolution pipeline — Key + Roman numeral → HarmonyContext; Figure DSL → FigureToken[]; resolve to concrete pitches
 2. **Phase 2 (Voice Leading):** Basic voice-leading strategies (closest voicing, drop voicings) informed by Tymoczko's geometric model
-3. **Phase 3 (AI Integration):** MCP server / tool-use interface for AI agents to call harmonics functions
+3. **Phase 3 (AI Integration):** MCP server / tool-use interface for AI agents to call figura functions
 4. **Phase 4 (Extensions):** Non-Western scales, microtonal support, additional output formats
 
 ### Risk Mitigation
 
 - **TDD-first development** (already mandated in CLAUDE.md) ensures music theory edge cases are caught
-- **Strict package boundaries** (@harmonics/core vs @harmonics/strudel) prevent scope creep
+- **Strict package boundaries** (@figura/core vs @figura/strudel) prevent scope creep
 - **MIT license** ensures maximum adoption and ecosystem compatibility
 - **Functional, pure API** makes the library testable, composable, and safe for concurrent use
 
@@ -543,19 +543,19 @@ _Source: [MNX specification](https://w3c.github.io/mnx/docs/), [AI music generat
 
 ### Summary of Key Findings
 
-1. **The resolution pipeline gap is real and validated.** No JS/TS library offers Roman numeral → harmonic context → figure resolution → concrete pitches. music21 does parts of this in Python; Synfire does all of it but as proprietary desktop software. harmonics is the first to attempt this as an open-source, embeddable TypeScript library.
+1. **The resolution pipeline gap is real and validated.** No JS/TS library offers Roman numeral → harmonic context → figure resolution → concrete pitches. music21 does parts of this in Python; Synfire does all of it but as proprietary desktop software. figura is the first to attempt this as an open-source, embeddable TypeScript library.
 
-2. **Synfire's architecture is the strongest conceptual precedent.** Its separation of Figure (parametric musical expression) from Harmony (chord progression context), with configurable Interpretation (voice leading strategy) and Rendering (pitch resolution), maps directly to harmonics' pipeline: `FigureToken[] + HarmonyContext → ResolvedFigure`.
+2. **Synfire's architecture is the strongest conceptual precedent.** Its separation of Figure (parametric musical expression) from Harmony (chord progression context), with configurable Interpretation (voice leading strategy) and Rendering (pitch resolution), maps directly to figura' pipeline: `FigureToken[] + HarmonyContext → ResolvedFigure`.
 
-3. **The functional programming paradigm is correct.** Tonal.js proved that pure functions, immutable data structures, and modular npm packages are the right approach for JS/TS music theory. harmonics should follow this pattern.
+3. **The functional programming paradigm is correct.** Tonal.js proved that pure functions, immutable data structures, and modular npm packages are the right approach for JS/TS music theory. figura should follow this pattern.
 
-4. **AI demand validates the timing.** LLM-driven music generation (NotaGen, MIDI-LLMs, MetaScore) needs structured symbolic representations. HarmonyTok research confirms that pitch-class decomposition — what harmonics' resolution pipeline inherently produces — is the optimal tokenization strategy.
+4. **AI demand validates the timing.** LLM-driven music generation (NotaGen, MIDI-LLMs, MetaScore) needs structured symbolic representations. HarmonyTok research confirms that pitch-class decomposition — what figura' resolution pipeline inherently produces — is the optimal tokenization strategy.
 
-5. **Strudel is the right output target.** The live coding community is growing (300% algorave growth since 2020), Strudel runs in the browser, and it already uses Tonal.js for music theory primitives. harmonics adds the missing harmonic intelligence layer.
+5. **Strudel is the right output target.** The live coding community is growing (300% algorave growth since 2020), Strudel runs in the browser, and it already uses Tonal.js for music theory primitives. figura adds the missing harmonic intelligence layer.
 
 ### Strategic Impact Assessment
 
-harmonics occupies a unique position in the ecosystem: it's not competing with Tonal.js (which provides primitives) or music21 (which provides analysis) or Strudel (which provides patterns). It's the **connective tissue** between functional harmony knowledge and concrete musical output — the layer that turns "play a I-IV-V-I in C major with this melodic figure and this rhythm" into actual pitched, timed events.
+figura occupies a unique position in the ecosystem: it's not competing with Tonal.js (which provides primitives) or music21 (which provides analysis) or Strudel (which provides patterns). It's the **connective tissue** between functional harmony knowledge and concrete musical output — the layer that turns "play a I-IV-V-I in C major with this melodic figure and this rhythm" into actual pitched, timed events.
 
 This positioning is defensible because:
 - The domain knowledge barrier is high (music theory + DSL design + TypeScript)
@@ -566,7 +566,7 @@ This positioning is defensible because:
 ### Next Steps
 
 1. **Use this research to inform the PRD** — the competitive landscape, Synfire's model, and the identified gap should ground the product requirements
-2. **Reference Synfire's symbol types** when designing harmonics' FigureToken variants — Chord, Vertical, Horizontal, Pitch, Bass, Relative are well-proven categories
+2. **Reference Synfire's symbol types** when designing figura' FigureToken variants — Chord, Vertical, Horizontal, Pitch, Bass, Relative are well-proven categories
 3. **Adopt RomanText conventions** for the Roman numeral parser
 4. **Design types for extensibility** — MIDI 1.0 pitch model now, but keep the door open for microtonal/MIDI 2.0
 5. **Consider MCP server as a Phase 3 deliverable** — AI tool-use integration is a natural extension
@@ -578,4 +578,4 @@ This positioning is defensible because:
 **Source Verification:** All facts cited with web-verified sources
 **Confidence Level:** High — based on multiple authoritative sources across academic, commercial, and open-source domains
 
-_This research document serves as the authoritative domain reference for the harmonics library and provides strategic grounding for product requirements, architecture, and implementation decisions._
+_This research document serves as the authoritative domain reference for the figura library and provides strategic grounding for product requirements, architecture, and implementation decisions._

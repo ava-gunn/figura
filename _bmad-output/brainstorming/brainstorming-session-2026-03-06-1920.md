@@ -1,7 +1,7 @@
 ---
 stepsCompleted: [1, 2, 3, 4]
 inputDocuments: []
-session_topic: 'Resolution semantics for the harmonics DSL - turning symbolic figures into concrete pitched events'
+session_topic: 'Resolution semantics for the figura DSL - turning symbolic figures into concrete pitched events'
 session_goals: 'Explore design decisions, edge cases, and tradeoffs in the resolution pipeline; surface non-obvious interactions between rhythm, harmony, and voicing'
 selected_approach: 'ai-recommended'
 techniques_used: ['Morphological Analysis', 'First Principles Thinking', 'Assumption Reversal']
@@ -18,12 +18,12 @@ workflow_completed: true
 
 ## Session Overview
 
-**Topic:** Resolution semantics for the harmonics DSL - turning symbolic figures into concrete pitched events
+**Topic:** Resolution semantics for the figura DSL - turning symbolic figures into concrete pitched events
 **Goals:** Explore design decisions, edge cases, and tradeoffs in the resolution pipeline; surface non-obvious interactions between rhythm, harmony, and voicing
 
 ### Context Guidance
 
-_The harmonics library is a TypeScript music theory algebra for symbolic phrase resolution. The core pipeline resolves Key + Roman numeral to HarmonyContext, parses Figure DSL and Rhythm DSL tokens, then resolves them into concrete pitched events (ResolvedFigure) which can be converted to Strudel mini-notation._
+_The figura library is a TypeScript music theory algebra for symbolic phrase resolution. The core pipeline resolves Key + Roman numeral to HarmonyContext, parses Figure DSL and Rhythm DSL tokens, then resolves them into concrete pitched events (ResolvedFigure) which can be converted to Strudel mini-notation._
 
 ### Session Setup
 
@@ -32,7 +32,7 @@ _Session focused on three interconnected design challenges: (1) how figure token
 ## Technique Selection
 
 **Approach:** AI-Recommended Techniques
-**Analysis Context:** Resolution semantics for the harmonics DSL with focus on design decisions, edge cases, and tradeoffs
+**Analysis Context:** Resolution semantics for the figura DSL with focus on design decisions, edge cases, and tradeoffs
 
 **Recommended Techniques:**
 
@@ -230,5 +230,5 @@ The most significant shift was the anchor demotion. Starting with the Synfire/Sc
 **Recommended Next Steps:**
 
 1. Feed this output into a Quick Spec (`/bmad-bmm-quick-spec`) for the resolver redesign
-2. Or create a full PRD (`/bmad-bmm-create-prd`) for the complete harmonics library scope
+2. Or create a full PRD (`/bmad-bmm-create-prd`) for the complete figura library scope
 3. Update `.claude/DECISIONS.md` and `.claude/DSL.md` with the new axioms and algorithm

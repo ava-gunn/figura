@@ -4,7 +4,7 @@ slug: 'strudel-example-scripts'
 created: '2026-03-09'
 status: 'completed'
 stepsCompleted: [1, 2, 3, 4]
-tech_stack: ['TypeScript', 'tonal.js', '@harmonics/core', '@harmonics/strudel', 'Strudel mini-notation']
+tech_stack: ['TypeScript', 'tonal.js', '@figura/core', '@figura/strudel', 'Strudel mini-notation']
 files_to_modify: ['examples/jazz-ii-v-i.js', 'examples/pop-ballad.js', 'examples/blues-shuffle.js', 'examples/modal-vamp.js', 'examples/classical-arpeggio.js', 'examples/latin-bossa.js']
 code_patterns: ['expandProgression → parseFigure → parseRhythm → resolvePhrase → toMiniNotation → Strudel pattern', 'Progression = { key, chords: [{ roman, duration }] }', 'note(notes).struct(struct).velocity(velocity).sound(synth)']
 test_patterns: []
@@ -18,11 +18,11 @@ test_patterns: []
 
 ### Problem Statement
 
-The harmonics library has no examples — a new user can't see how harmonics output feeds into Strudel for live coding. All usage patterns are buried in tests and planning docs.
+The figura library has no examples — a new user can't see how figura output feeds into Strudel for live coding. All usage patterns are buried in tests and planning docs.
 
 ### Solution
 
-Create an `examples/` directory with Strudel-ready scripts in a variety of musical styles, showing the full pipeline from harmonics resolution to Strudel patterns with playback.
+Create an `examples/` directory with Strudel-ready scripts in a variety of musical styles, showing the full pipeline from figura resolution to Strudel patterns with playback.
 
 ### Scope
 
@@ -31,7 +31,7 @@ Create an `examples/` directory with Strudel-ready scripts in a variety of music
 - Multiple Strudel scripts, each showcasing a different musical style
 - Coverage of `melody`, `chord`, and `bass` figure types where musically appropriate
 - Full pipeline ending in Strudel patterns (`note()`, `s()`, etc.) that produce sound in the Strudel editor
-- Comments explaining the musical context and harmonics usage
+- Comments explaining the musical context and figura usage
 
 **Out of Scope:**
 - Node.js runnability / CLI scripts
@@ -67,7 +67,7 @@ Create an `examples/` directory with Strudel-ready scripts in a variety of music
 - Scripts target the Strudel editor environment (browser-based), not Node.js
 - Each script should be self-contained and pasteable into the Strudel REPL
 - Scripts are `.js` files (Strudel editor runs plain JS, not TS)
-- Imports use `@harmonics/core` and `@harmonics/strudel` package names
+- Imports use `@figura/core` and `@figura/strudel` package names
 - Each example focuses on a distinct musical style to showcase the library's versatility
 - Examples should use comments to explain musical context for non-musicians
 - Each example uses `stack()` to layer melody, chord, and/or bass parts where musically appropriate
@@ -146,21 +146,21 @@ Create an `examples/` directory with Strudel-ready scripts in a variety of music
 ### Acceptance Criteria
 
 - [ ] AC 1: Given the `examples/` directory exists, when a user lists its contents, then they find 6 `.js` files — one per musical style
-- [ ] AC 2: Given any example file, when pasted into the Strudel REPL with harmonics loaded, then it produces audible musical output without errors
-- [ ] AC 3: Given the jazz ii-V-I example, when read by a developer unfamiliar with harmonics, then the comments explain the full pipeline from imports through to Strudel playback
+- [ ] AC 2: Given any example file, when pasted into the Strudel REPL with figura loaded, then it produces audible musical output without errors
+- [ ] AC 3: Given the jazz ii-V-I example, when read by a developer unfamiliar with figura, then the comments explain the full pipeline from imports through to Strudel playback
 - [ ] AC 4: Given each example, when the `expandProgression` call is inspected, then the roman numerals are all valid (`IM7`, `iim7`, `iiim7`, `IVM7`, `V7`, `vim7`, `viiø7`/`viim7b5`) and durations are >= 1
 - [ ] AC 5: Given the set of examples, when all figure types are tallied, then `melody`, `chord`, and `bass` are each used in at least one example
 - [ ] AC 6: Given the set of examples, when all rhythm tokens are tallied, then play (`1`), tie (`_`), staccato (`.`), rest (`~`), and accent (`!`) are each used in at least one example
 - [ ] AC 7: Given the modal vamp example, when figure and rhythm have different lengths, then the resolver produces LCM-length output demonstrating cycling behavior
 - [ ] AC 8: Given each example, when the Strudel pattern is constructed, then it uses `note(notes).struct(struct).velocity(velocity).sound(...)` correctly
-- [ ] AC 9: Given each example file, when opened in an editor, then it contains a header comment block explaining the musical style, key, progression, and what harmonics features it demonstrates
+- [ ] AC 9: Given each example file, when opened in an editor, then it contains a header comment block explaining the musical style, key, progression, and what figura features it demonstrates
 
 ## Additional Context
 
 ### Dependencies
 
-- `@harmonics/core` — the built core package (parsers, resolver, expandProgression)
-- `@harmonics/strudel` — toMiniNotation converter
+- `@figura/core` — the built core package (parsers, resolver, expandProgression)
+- `@figura/strudel` — toMiniNotation converter
 - Strudel editor environment — provides `note()`, `.struct()`, `.velocity()`, `.sound()`, `.stack()` etc.
 - No new npm dependencies needed for the library itself
 
@@ -172,7 +172,7 @@ Create an `examples/` directory with Strudel-ready scripts in a variety of music
 
 ### Notes
 
-- The Strudel editor has its own import mechanism — examples may need adaptation depending on how the user loads harmonics into Strudel
+- The Strudel editor has its own import mechanism — examples may need adaptation depending on how the user loads figura into Strudel
 - `expandProgression` only supports major-key diatonic chords with 7th suffixes (m7, 7, M7, m7b5) — example progressions must stay within these bounds
 - LCM cycling: if figure and rhythm have different lengths, the resolver cycles both to LCM length — the modal vamp example specifically demonstrates this
 - Blues example is constrained by the available chord types — a true blues would use dominant 7ths on I and IV, but our `IM7` and `IVM7` produce major 7ths. This is noted in the example comments as a known approximation. A future extension could add support for secondary dominants.

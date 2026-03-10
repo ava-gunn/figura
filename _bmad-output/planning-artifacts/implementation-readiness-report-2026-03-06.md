@@ -1,7 +1,7 @@
 # Implementation Readiness Assessment Report
 
 **Date:** 2026-03-06
-**Project:** harmonics
+**Project:** figura
 
 ## Document Inventory
 
@@ -46,9 +46,9 @@ FR25: System can encode rests as ~ in the notes string
 FR26: Composer can enable debug mode on resolution functions to receive per-position trace output
 FR27: Debug mode can display: figure token, active chord, pitch pool, degree lookup, and resolved pitch for each position
 FR28: Debug mode can assume 8th notes when no rhythm DSL is provided
-FR29: Developer can import and use @harmonics/core without any Strudel dependency
-FR30: Developer can import typed functions (parseFigure, parseRhythm, resolvePhrase, resolveScaleDegree, resolveChordDegree) from @harmonics/core
-FR31: Developer can import toMiniNotation from @harmonics/strudel
+FR29: Developer can import and use @figura/core without any Strudel dependency
+FR30: Developer can import typed functions (parseFigure, parseRhythm, resolvePhrase, resolveScaleDegree, resolveChordDegree) from @figura/core
+FR31: Developer can import toMiniNotation from @figura/strudel
 FR32: Developer can access typed data structures (FigureToken, RhythmToken, HarmonyContext, ResolvedEvent, ResolvedFigure) as public exports
 FR33: Developer can use the ResolvedFigure structured data to build custom renderers independent of Strudel
 
@@ -63,8 +63,8 @@ NFR4: Every pitch resolution is deterministic - same inputs always produce same 
 NFR5: Resolution functions are pure: no side effects, no shared mutable state, no implicit dependencies
 NFR6: All resolution rules are covered by unit tests that assert specific pitch class outputs for known inputs
 NFR7: The reference phrase end-to-end test serves as the regression gate for musical correctness
-NFR8: @harmonics/core has zero runtime dependencies except tonal
-NFR9: @harmonics/strudel depends only on @harmonics/core - never imports Strudel runtime code
+NFR8: @figura/core has zero runtime dependencies except tonal
+NFR9: @figura/strudel depends only on @figura/core - never imports Strudel runtime code
 NFR10: Package.json exports are validated by publint to ensure correct consumption by bundlers and Node.js
 NFR11: ESM-only output, compatible with browser, Node.js 18+, and Deno
 NFR12: 90% line/function coverage, 85% branch coverage enforced by Vitest
@@ -142,7 +142,7 @@ None. All 33 FRs have traceable coverage in epics and stories.
 
 ### UX Document Status
 
-Not Found — correctly absent. harmonics is a developer tool (npm library) with no user interface. The "user interface" is the typed API surface consumed via import statements.
+Not Found — correctly absent. figura is a developer tool (npm library) with no user interface. The "user interface" is the typed API surface consumed via import statements.
 
 ### Alignment Issues
 
@@ -160,7 +160,7 @@ All 4 epics describe what the user/developer can accomplish, not technical miles
 - Epic 1: "resolve musical degrees to concrete pitches" — core differentiator
 - Epic 2: "express figures and rhythms as compact string DSLs" — input capability
 - Epic 3: "resolve complete musical phrases" — pipeline capability
-- Epic 4: "hear resolved phrases through Strudel" + "build on harmonics as a library" — output + validation
+- Epic 4: "hear resolved phrases through Strudel" + "build on figura as a library" — output + validation
 
 No technical-only epics found.
 

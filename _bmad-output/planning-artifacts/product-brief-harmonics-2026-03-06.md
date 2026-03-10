@@ -7,11 +7,11 @@ date: 2026-03-06
 author: Ava
 ---
 
-# Product Brief: harmonics
+# Product Brief: figura
 
 ## Executive Summary
 
-harmonics is a TypeScript music theory algebra that brings Synfire-style parametric figure resolution to the programmatic live coding space. It provides a simple API for combining small musical figures with harmonic contexts and rhythms, letting composers experiment with how the same shapes sound across different chords, keys, and rhythmic treatments. The library outputs Strudel mini-notation strings, integrating directly into the live coding ecosystem.
+figura is a TypeScript music theory algebra that brings Synfire-style parametric figure resolution to the programmatic live coding space. It provides a simple API for combining small musical figures with harmonic contexts and rhythms, letting composers experiment with how the same shapes sound across different chords, keys, and rhythmic treatments. The library outputs Strudel mini-notation strings, integrating directly into the live coding ecosystem.
 
 ---
 
@@ -36,8 +36,8 @@ This friction discourages harmonic experimentation. Live coders either avoid har
 
 A two-package TypeScript library with a simple API for symbolic phrase resolution:
 
-- **@harmonics/core** — Pure music algebra. Takes a key, Roman numeral progression, figure DSL string, and rhythm DSL string, and resolves them into concrete pitched events. Stateless, functional, composable.
-- **@harmonics/strudel** — Converts resolved figures into Strudel mini-notation strings for immediate playback in the live coding environment.
+- **@figura/core** — Pure music algebra. Takes a key, Roman numeral progression, figure DSL string, and rhythm DSL string, and resolves them into concrete pitched events. Stateless, functional, composable.
+- **@figura/strudel** — Converts resolved figures into Strudel mini-notation strings for immediate playback in the live coding environment.
 
 The core insight, validated by Synfire's commercial success, is separating the *figure* (a reusable melodic/harmonic shape) from the *context* (key, chord, voicing) and reuniting them at resolution time. Change the figure, the rhythm, or the harmony independently — the resolver adapts.
 
@@ -55,27 +55,27 @@ The core insight, validated by Synfire's commercial success, is separating the *
 
 **Ava — The Theory-Curious Sound Explorer**
 
-A developer and musician who knows music theory and wants a programmatic tool for harmonic experimentation. Comfortable with Roman numerals, chord progressions, and melodic concepts. Currently uses Strudel for live coding but finds patterns too explicit — every note manually spelled out, every chord change hand-transposed. Wants to define small musical ideas and hear them transform across harmonic contexts. Motivated by surprise: the moment when simple ingredients combine into something unexpected. Uses harmonics as a creative collaborator, not a notation tool.
+A developer and musician who knows music theory and wants a programmatic tool for harmonic experimentation. Comfortable with Roman numerals, chord progressions, and melodic concepts. Currently uses Strudel for live coding but finds patterns too explicit — every note manually spelled out, every chord change hand-transposed. Wants to define small musical ideas and hear them transform across harmonic contexts. Motivated by surprise: the moment when simple ingredients combine into something unexpected. Uses figura as a creative collaborator, not a notation tool.
 
 **Live Music Coders — The Pattern Tinkerers**
 
-Strudel and Tidal Cycles users who compose through code. Basic music theory knowledge is helpful but not required — they understand chords and keys at a practical level. Drawn to harmonics because it lets them get harmonically interesting results without manually managing every pitch. The experimentation loop is the learning path: try a figure over a progression, hear what happens, tweak, repeat. They discover harmonics through the Strudel ecosystem, community channels, or seeing someone use it in a performance.
+Strudel and Tidal Cycles users who compose through code. Basic music theory knowledge is helpful but not required — they understand chords and keys at a practical level. Drawn to figura because it lets them get harmonically interesting results without manually managing every pitch. The experimentation loop is the learning path: try a figure over a progression, hear what happens, tweak, repeat. They discover figura through the Strudel ecosystem, community channels, or seeing someone use it in a performance.
 
 ### Secondary Users
 
-N/A — harmonics is a focused library for a specific creative use case. Future secondary audiences (music educators, AI/generative music researchers, tool builders) may emerge but are not driving design decisions now.
+N/A — figura is a focused library for a specific creative use case. Future secondary audiences (music educators, AI/generative music researchers, tool builders) may emerge but are not driving design decisions now.
 
 ### User Journey
 
-1. **Discovery** — Finds harmonics through the Strudel ecosystem, a blog post, or seeing a live coding performance that uses it
+1. **Discovery** — Finds figura through the Strudel ecosystem, a blog post, or seeing a live coding performance that uses it
 2. **Onboarding** — Installs via npm, writes a first example: a simple figure over a I-IV-V-I. Hears the figure resolve across the chords. Immediately gets it.
 3. **Core Usage** — Defines figures and rhythms, swaps harmonic contexts, listens for interesting combinations. The workflow is: sketch, play, tweak, surprise.
 4. **Success Moment** — Hears something novel that emerged from simple inputs. "I didn't write that melody — the library found it."
-5. **Long-term** — Builds a personal library of figures and progressions. Uses harmonics as a core part of live coding sessions and composition experiments.
+5. **Long-term** — Builds a personal library of figures and progressions. Uses figura as a core part of live coding sessions and composition experiments.
 
 ## Success Metrics
 
-The primary success metric for harmonics is **musical coherence of output**. When simple figures are resolved against a harmonic context, the result should sound like intentional, harmonically relevant music — not random notes, not mechanical transposition.
+The primary success metric for figura is **musical coherence of output**. When simple figures are resolved against a harmonic context, the result should sound like intentional, harmonically relevant music — not random notes, not mechanical transposition.
 
 Concrete indicators of musical coherence:
 - Pitches resolve correctly to the active harmony (right notes for the chord/key)
@@ -86,7 +86,7 @@ Concrete indicators of musical coherence:
 
 ### Business Objectives
 
-N/A — harmonics is a personal creative tool released as open source. There are no revenue, growth, or market share objectives. Success is measured by the quality and musical usefulness of the output.
+N/A — figura is a personal creative tool released as open source. There are no revenue, growth, or market share objectives. Success is measured by the quality and musical usefulness of the output.
 
 ### Key Performance Indicators
 
@@ -108,8 +108,8 @@ N/A — harmonics is a personal creative tool released as open source. There are
 - Degree overflow wraps modulo pool size
 
 **Packages:**
-- `@harmonics/core` — Pure music algebra, the full resolution pipeline
-- `@harmonics/strudel` — Converts ResolvedFigure to Strudel mini-notation strings
+- `@figura/core` — Pure music algebra, the full resolution pipeline
+- `@figura/strudel` — Converts ResolvedFigure to Strudel mini-notation strings
 
 **Figure Types:**
 - Melody — Diatonic scale (7 tones), nearest-overall voice leading
@@ -141,5 +141,5 @@ N/A — harmonics is a personal creative tool released as open source. There are
 - Advanced chord symbols (extensions, alterations, sus chords)
 - Anchor/range placement for register control
 - Voice leading at phrase boundaries
-- AI integration — MCP server for AI agents to call harmonics as a harmony reasoning tool
+- AI integration — MCP server for AI agents to call figura as a harmony reasoning tool
 - Non-Western scales and microtonal extensions (MIDI 2.0 pitch model)

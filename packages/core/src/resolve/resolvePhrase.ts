@@ -181,7 +181,7 @@ const REST_EVENT: ResolvedEvent = {
 }
 
 /**
- * The core resolution function — the heart of the harmonics algebra.
+ * The core resolution function — the heart of the figura algebra.
  *
  * Combines a parsed figure, a parsed rhythm, and a harmony context into
  * a fully resolved sequence of musical events. Single-pass left-to-right

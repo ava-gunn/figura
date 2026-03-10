@@ -1,5 +1,5 @@
 {
-  "name": "@harmonics/strudel",
+  "name": "@figura/strudel",
   "version": "0.0.1",
   "type": "module",
   "module": "./dist/index.js",
@@ -16,6 +16,6 @@
     "dev":   "tsup src/index.ts --format esm --dts --watch"
   },
   "dependencies": {
-    "@harmonics/core": "workspace:*"
+    "@figura/core": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 // ============================================================================
-// Jazz ii-V-I — The "Hello World" of Harmonics
+// Jazz ii-V-I — The "Hello World" of Figura
 // ============================================================================
 //
 // Style:       Jazz
@@ -7,7 +7,7 @@
 // Progression: iim7 (Dm7) → V7 (G7) → IM7 (Cmaj7)
 //
 // This is the most common cadence in jazz. The melody uses the canonical
-// reference phrase from the harmonics design session. Three layers are
+// reference phrase from the figura design session. Three layers are
 // stacked: melody, chord comping, and a walking bass line.
 //
 // Features demonstrated:

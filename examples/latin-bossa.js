@@ -20,8 +20,8 @@
 //   - Stepwise melodic motion across chord changes
 // ============================================================================
 
-import { parseFigure, parseRhythm, expandProgression, resolvePhrase } from "@harmonics/core"
-import { toMiniNotation } from "@harmonics/strudel"
+import { parseFigure, parseRhythm, expandProgression, resolvePhrase } from "@figura/core"
+import { toMiniNotation } from "@figura/strudel"
 
 // --- Harmony ---
 const progression = expandProgression({

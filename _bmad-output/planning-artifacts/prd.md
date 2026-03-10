@@ -20,7 +20,7 @@ classification:
   complexity: medium
   projectContext: brownfield
 inputDocuments:
-  - product-brief-harmonics-2026-03-06.md
+  - product-brief-figura-2026-03-06.md
   - domain-symbolic-music-representation-research-2026-03-06.md
   - brainstorming-session-2026-03-06-1920.md
   - .claude/ARCHITECTURE.md
@@ -35,28 +35,28 @@ documentCounts:
 workflowType: 'prd'
 ---
 
-# Product Requirements Document - harmonics
+# Product Requirements Document - figura
 
 **Author:** Ava
 **Date:** 2026-03-06
 
 ## Executive Summary
 
-harmonics is a TypeScript music theory algebra that separates musical figures (melodic/harmonic shapes) from harmonic context (key + chord progression) and reunites them at resolution time. Inspired by Cognitone Synfire's parametric figure/harmony model — but implemented as an open-source, embeddable library — it targets the Strudel live coding ecosystem as its primary output format.
+figura is a TypeScript music theory algebra that separates musical figures (melodic/harmonic shapes) from harmonic context (key + chord progression) and reunites them at resolution time. Inspired by Cognitone Synfire's parametric figure/harmony model — but implemented as an open-source, embeddable library — it targets the Strudel live coding ecosystem as its primary output format.
 
 The core pipeline takes a key, Roman numeral progression, figure DSL string, and rhythm DSL string, and resolves them into concrete pitched events. Figures, rhythms, and harmonic contexts are independent dimensions: change any one without touching the others, and the resolver adapts. The library outputs Strudel mini-notation strings for immediate playback.
 
-The primary user is a theory-aware musician and developer who live-codes with Strudel but finds its patterns too explicit — every pitch manually spelled, every chord change hand-transposed. harmonics closes the gap between "I have a melodic idea" and "I hear it across a progression" by letting the composer work at the level of shapes and relationships rather than individual notes.
+The primary user is a theory-aware musician and developer who live-codes with Strudel but finds its patterns too explicit — every pitch manually spelled, every chord change hand-transposed. figura closes the gap between "I have a melodic idea" and "I hear it across a progression" by letting the composer work at the level of shapes and relationships rather than individual notes.
 
 ### What Makes This Special
 
 Two forces drive the value: **speed of experimentation** and **surprise as a creative outcome**. Swapping a figure, rhythm, or progression is a single edit — the resolver handles the rest. This speed enables combinatorial exploration that would be impractical by hand. The payoff is emergent music: simple inputs combine through the resolution pipeline to produce results the composer didn't fully anticipate. The library becomes a creative collaborator, not a transposition engine.
 
-The core insight is that no JS/TS library bridges functional harmony (Roman numeral analysis) through a figure DSL to resolved concrete pitches. Tonal.js provides music theory primitives but no resolution pipeline. Strudel provides patterns but no harmonic intelligence. Synfire does the full resolution but is proprietary, desktop-only, and closed. harmonics is the first open-source, embeddable implementation of this model.
+The core insight is that no JS/TS library bridges functional harmony (Roman numeral analysis) through a figure DSL to resolved concrete pitches. Tonal.js provides music theory primitives but no resolution pipeline. Strudel provides patterns but no harmonic intelligence. Synfire does the full resolution but is proprietary, desktop-only, and closed. figura is the first open-source, embeddable implementation of this model.
 
 ## Project Classification
 
-- **Project Type:** Developer Tool — npm library with two packages (`@harmonics/core`, `@harmonics/strudel`), custom DSL, typed API surface
+- **Project Type:** Developer Tool — npm library with two packages (`@figura/core`, `@figura/strudel`), custom DSL, typed API surface
 - **Domain:** Music Technology / Creative Computing — music theory algebra for symbolic phrase resolution
 - **Complexity:** Medium — deep music theory domain knowledge required (scale degrees, chord tones, voice leading, contour preservation); no regulatory or compliance concerns
 - **Project Context:** Brownfield — architecture, DSL specification, domain model, design decisions, and resolution algorithm already established
@@ -71,7 +71,7 @@ The core insight is that no JS/TS library bridges functional harmony (Roman nume
 
 ### Business Success
 
-N/A — harmonics is a personal creative tool released as open source. No revenue, growth, or market share objectives. Success is measured entirely by the musical quality and usefulness of the output.
+N/A — figura is a personal creative tool released as open source. No revenue, growth, or market share objectives. Success is measured entirely by the musical quality and usefulness of the output.
 
 ### Technical Success
 
@@ -102,7 +102,7 @@ See [Project Scoping & Phased Development](#project-scoping--phased-development)
 
 ### Journey 1: Ava — First Harmonic Experiment (Primary, Happy Path)
 
-Ava has been live coding in Strudel for months, manually spelling out notes for every chord change. She's heard about harmonics and installs it via npm. She opens her Strudel session, imports `@harmonics/strudel`, and writes her first experiment: a simple ascending figure `"1 3 5 3"` over a `iim7 V7 IM7` progression in C.
+Ava has been live coding in Strudel for months, manually spelling out notes for every chord change. She's heard about figura and installs it via npm. She opens her Strudel session, imports `@figura/strudel`, and writes her first experiment: a simple ascending figure `"1 3 5 3"` over a `iim7 V7 IM7` progression in C.
 
 She hits Ctrl+Enter. The figure resolves — D, F, A, F over Dm7, then the same shape shifts to G7 and Cmaj7. She hears the contour preserved but the pitches change with the harmony. She swaps the figure to `"5 3 1 3"` — same chords, inverted shape, completely different feel. Then she swaps the progression to a minor key. Three edits, three different musical results, zero manual transposition.
 
@@ -112,9 +112,9 @@ The moment: she hears something she didn't write. The combination of a simple fi
 
 ### Journey 2: Pattern Tinkerer — Learning Through Experimentation (Primary, Alternative Path)
 
-Kai knows chords and keys at a practical level but doesn't think in Roman numerals day-to-day. He sees someone use harmonics in a live coding stream — the performer swaps one string and the whole melody reshapes over the chords. He wants that.
+Kai knows chords and keys at a practical level but doesn't think in Roman numerals day-to-day. He sees someone use figura in a live coding stream — the performer swaps one string and the whole melody reshapes over the chords. He wants that.
 
-He installs harmonics, copies the example from the README, and plays it. It works. He starts changing numbers in the figure string — `"1 3 5"` becomes `"1 2 3"` — and listens to what happens. He doesn't fully understand why degree 2 over a V7 chord gives him an A, but it sounds right, so he keeps going. He tries adding rhythm: `"1 _ . 1"` — now there's a tie, a staccato, and the groove changes without touching the melody.
+He installs figura, copies the example from the README, and plays it. It works. He starts changing numbers in the figure string — `"1 3 5"` becomes `"1 2 3"` — and listens to what happens. He doesn't fully understand why degree 2 over a V7 chord gives him an A, but it sounds right, so he keeps going. He tries adding rhythm: `"1 _ . 1"` — now there's a tie, a staccato, and the groove changes without touching the melody.
 
 Kai's learning path is the experimentation loop itself: try, listen, tweak, repeat. He builds intuition for how figures and harmonies interact by hearing the results, not by studying theory upfront.
 
@@ -132,13 +132,13 @@ She adjusts with the `-` modifier to force the octave down, re-evaluates, and th
 
 ### Journey 4: Developer — Building a Harmony Playground (API Consumer)
 
-Mika is building a browser-based music education tool. She wants students to experiment with how the same melodic shape sounds over different chord progressions. She imports `@harmonics/core` directly — no Strudel dependency needed.
+Mika is building a browser-based music education tool. She wants students to experiment with how the same melodic shape sounds over different chord progressions. She imports `@figura/core` directly — no Strudel dependency needed.
 
 She calls `parseFigure()`, `parseRhythm()`, and `resolvePhrase()` with typed inputs and gets back a `ResolvedFigure` with concrete pitched events. She maps the events to her own Web Audio renderer. She uses the debug output to build a visualization showing students which pitch pool each degree resolved against.
 
-Later, she adds `@harmonics/strudel` for a quick demo mode that outputs mini-notation strings for Strudel playback. The two packages compose cleanly — core for her custom renderer, strudel for the demo.
+Later, she adds `@figura/strudel` for a quick demo mode that outputs mini-notation strings for Strudel playback. The two packages compose cleanly — core for her custom renderer, strudel for the demo.
 
-**Capabilities revealed:** `@harmonics/core` usable without Strudel, typed API surface for programmatic use, `ResolvedFigure` as structured data (not just strings), debug output as a building block for tooling, clean package boundary between core and strudel.
+**Capabilities revealed:** `@figura/core` usable without Strudel, typed API surface for programmatic use, `ResolvedFigure` as structured data (not just strings), debug output as a building block for tooling, clean package boundary between core and strudel.
 
 ### Journey Requirements Summary
 
@@ -150,7 +150,7 @@ Later, she adds `@harmonics/strudel` for a quick demo mode that outputs mini-not
 | Strudel mini-notation output | x | x | x | |
 | Single-pass contour-preserving resolution | x | x | x | x |
 | Debug mode (per-position trace) | | | x | x |
-| `@harmonics/core` standalone use | | | | x |
+| `@figura/core` standalone use | | | | x |
 | Typed `ResolvedFigure` as structured data | | | x | x |
 | Octave modifier (`-`) as escape hatch | | | x | |
 | Copy-paste examples / low entry barrier | | x | | |
@@ -163,16 +163,16 @@ Later, she adds `@harmonics/strudel` for a quick demo mode that outputs mini-not
 The Figure DSL and Rhythm DSL are independent, parallel string languages that zip by position. Each is minimal (5-7 token types) but their composition produces emergent complexity — polyrhythmic cycling via LCM when lengths differ, harmonic variation as chords change beneath the same figure. The DSLs are compact enough for live coding but expressive enough for serious compositional exploration.
 
 **New Paradigm — Figure/harmony separation as a library:**
-Cognitone Synfire proved that separating parametric figures from harmonic context, then reuniting them at render time, produces musically coherent results. harmonics is the first implementation of this model as an open-source, embeddable TypeScript library. The resolution pipeline (Key + Roman numeral + Figure DSL + Rhythm DSL to concrete pitched events) has no equivalent in the JS/TS ecosystem.
+Cognitone Synfire proved that separating parametric figures from harmonic context, then reuniting them at render time, produces musically coherent results. figura is the first implementation of this model as an open-source, embeddable TypeScript library. The resolution pipeline (Key + Roman numeral + Figure DSL + Rhythm DSL to concrete pitched events) has no equivalent in the JS/TS ecosystem.
 
 **Pitch space as plugin architecture:**
 From the brainstorming session — new musical behaviors are new pitch space definitions (data), not new resolver logic (code). The resolver is written once; figure types (melody, bass, chord, pentatonic) differ only in which pitch space degrees index into. This makes the system extensible without modifying the core algorithm.
 
 ### Market Context & Competitive Landscape
 
-No JS/TS library bridges Roman numeral analysis through a figure DSL to resolved concrete pitches. The closest competitors operate in different niches: Tonal.js (primitives, no resolution), Strudel (patterns, no harmonic intelligence), music21 (Python, analysis-oriented), Synfire (proprietary, desktop-only). harmonics occupies the gap between these tools — the connective tissue between functional harmony knowledge and concrete musical output.
+No JS/TS library bridges Roman numeral analysis through a figure DSL to resolved concrete pitches. The closest competitors operate in different niches: Tonal.js (primitives, no resolution), Strudel (patterns, no harmonic intelligence), music21 (Python, analysis-oriented), Synfire (proprietary, desktop-only). figura occupies the gap between these tools — the connective tissue between functional harmony knowledge and concrete musical output.
 
-HarmonyTok research (2025) validates that pitch-class decomposition outperforms opaque symbol-level representation, aligning with harmonics' resolution approach. The growth of LLM-driven symbolic music generation creates demand for well-typed, structured harmonic representations that can serve as both human DSLs and machine-readable tool interfaces.
+HarmonyTok research (2025) validates that pitch-class decomposition outperforms opaque symbol-level representation, aligning with figura' resolution approach. The growth of LLM-driven symbolic music generation creates demand for well-typed, structured harmonic representations that can serve as both human DSLs and machine-readable tool interfaces.
 
 ### Validation
 
@@ -182,18 +182,18 @@ See [Measurable Outcomes](#measurable-outcomes) for the complete test strategy. 
 
 ### Project-Type Overview
 
-harmonics is distributed as two npm packages in a pnpm monorepo. The library targets TypeScript/JavaScript developers working in browser and Node.js environments. ESM-only output aligns with the Strudel ecosystem and modern JS tooling.
+figura is distributed as two npm packages in a pnpm monorepo. The library targets TypeScript/JavaScript developers working in browser and Node.js environments. ESM-only output aligns with the Strudel ecosystem and modern JS tooling.
 
 ### Technical Architecture Considerations
 
 **Language & Runtime:**
 - TypeScript with strict type checking, ESM-only output
-- Zero runtime dependencies except `tonal` in `@harmonics/core`
+- Zero runtime dependencies except `tonal` in `@figura/core`
 - Compatible with any JS environment: browser, Node.js, Deno
 
 **Package Distribution:**
-- `@harmonics/core` — pure music algebra, no Strudel dependency
-- `@harmonics/strudel` — string-output adapter, depends on `@harmonics/core`
+- `@figura/core` — pure music algebra, no Strudel dependency
+- `@figura/strudel` — string-output adapter, depends on `@figura/core`
 - Published to npm via pnpm monorepo
 - MIT license for maximum ecosystem compatibility
 
@@ -213,8 +213,8 @@ harmonics is distributed as two npm packages in a pnpm monorepo. The library tar
 
 Canonical example from design session:
 ```typescript
-import { parseFigure, parseRhythm, resolvePhrase } from '@harmonics/core'
-import { toMiniNotation } from '@harmonics/strudel'
+import { parseFigure, parseRhythm, resolvePhrase } from '@figura/core'
+import { toMiniNotation } from '@figura/strudel'
 
 const harmony = { key: 'C', chords: ['iim7', 'V7', 'IM7'] }
 const figure = parseFigure('1* 3 5 3 2* 1 7- 1*')
@@ -233,7 +233,7 @@ const { notes, struct, velocity } = toMiniNotation(resolved)
 - **Code quality toolchain:** ESLint + typescript-eslint strict, Prettier, Vitest with 90% coverage, Knip (unused exports), Publint (package.json validation), Sherif (monorepo consistency), CSpell (music theory dictionary), Husky + lint-staged
 - **TDD-first:** Red-green-refactor, no implementation without a failing test
 - **Conventional commits:** Enforced by commitlint, enables changelog automation
-- **AGPL isolation:** `@harmonics/strudel` outputs strings only — never imports Strudel runtime code
+- **AGPL isolation:** `@figura/strudel` outputs strings only — never imports Strudel runtime code
 
 ## Project Scoping & Phased Development
 
@@ -352,12 +352,12 @@ const { notes, struct, velocity } = toMiniNotation(resolved)
 - **FR26:** Composer can enable debug mode on resolution functions to receive per-position trace output
 - **FR27:** Debug mode can display: figure token, active chord, pitch pool, degree lookup, and resolved pitch for each position
 - **FR28:** Debug mode can assume 8th notes when no rhythm DSL is provided
-- **FR29:** Developer can import and use `@harmonics/core` without any Strudel dependency
+- **FR29:** Developer can import and use `@figura/core` without any Strudel dependency
 
 ### API & Type Surface
 
-- **FR30:** Developer can import typed functions (`parseFigure`, `parseRhythm`, `resolvePhrase`, `resolveScaleDegree`, `resolveChordDegree`) from `@harmonics/core`
-- **FR31:** Developer can import `toMiniNotation` from `@harmonics/strudel`
+- **FR30:** Developer can import typed functions (`parseFigure`, `parseRhythm`, `resolvePhrase`, `resolveScaleDegree`, `resolveChordDegree`) from `@figura/core`
+- **FR31:** Developer can import `toMiniNotation` from `@figura/strudel`
 - **FR32:** Developer can access typed data structures (`FigureToken`, `RhythmToken`, `HarmonyContext`, `ResolvedEvent`, `ResolvedFigure`) as public exports
 - **FR33:** Developer can use the ResolvedFigure structured data to build custom renderers independent of Strudel
 
@@ -378,8 +378,8 @@ const { notes, struct, velocity } = toMiniNotation(resolved)
 
 ### Integration & Compatibility
 
-- `@harmonics/core` has zero runtime dependencies except `tonal`
-- `@harmonics/strudel` depends only on `@harmonics/core` — never imports Strudel runtime code
+- `@figura/core` has zero runtime dependencies except `tonal`
+- `@figura/strudel` depends only on `@figura/core` — never imports Strudel runtime code
 - Package.json exports are validated by publint to ensure correct consumption by bundlers and Node.js
 - ESM-only output, compatible with browser, Node.js 18+, and Deno
 

@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 ## Role
-You are an AI pair programmer on the `harmonics` library — a TypeScript music
+You are an AI pair programmer on the `figura` library — a TypeScript music
 theory algebra for symbolic phrase resolution. You write both tests and
 implementation code, but you ALWAYS follow strict TDD:
 
@@ -43,8 +43,8 @@ chore: update dependencies
 
 ## Architecture (read .claude/ARCHITECTURE.md for full detail)
 Two packages:
-- `@harmonics/core`    — pure music algebra, no Strudel dependency
-- `@harmonics/strudel` — converts ResolvedFigure → Strudel mini-notation strings
+- `@figura/core`    — pure music algebra, no Strudel dependency
+- `@figura/strudel` — converts ResolvedFigure → Strudel mini-notation strings
 
 Core resolution pipeline:
 ```
@@ -52,7 +52,7 @@ Key + Roman numeral → HarmonyContext
 Figure DSL string   → FigureToken[]    (parseFigure)
 Rhythm DSL string   → RhythmToken[]    (parseRhythm)
 FigureToken[] + RhythmToken[] + HarmonyContext → ResolvedFigure  (resolvePhrase)
-ResolvedFigure → Strudel strings  (toMiniNotation, in @harmonics/strudel)
+ResolvedFigure → Strudel strings  (toMiniNotation, in @figura/strudel)
 ```
 
 ## Domain Knowledge

@@ -75,7 +75,7 @@ importers:
 
   packages/strudel:
     dependencies:
-      '@harmonics/core':
+      '@figura/core':
         specifier: workspace:*
         version: link:../core
 

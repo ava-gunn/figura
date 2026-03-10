@@ -19,8 +19,8 @@
 //   - Spacious rhythm with rests (~) and ties (_)
 // ============================================================================
 
-import { parseFigure, parseRhythm, expandProgression, resolvePhrase } from "@harmonics/core"
-import { toMiniNotation } from "@harmonics/strudel"
+import { parseFigure, parseRhythm, expandProgression, resolvePhrase } from "@figura/core"
+import { toMiniNotation } from "@figura/strudel"
 
 // --- Harmony ---
 // A single HarmonyContext (not an array). When resolvePhrase receives a

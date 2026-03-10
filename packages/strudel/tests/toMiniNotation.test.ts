@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import type { ResolvedEvent, ResolvedFigure } from "@harmonics/core"
+import type { ResolvedEvent, ResolvedFigure } from "@figura/core"
 import { toMiniNotation, type StrudelOutput } from "../src/index.js"
 
 function event(overrides: Partial<ResolvedEvent> = {}): ResolvedEvent {
