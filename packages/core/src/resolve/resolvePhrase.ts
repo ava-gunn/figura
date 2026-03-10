@@ -231,11 +231,9 @@ export function resolvePhrase(
     // TIE — sustain previous note, but advance voice leading chain.
     // previousMidi is updated (for voice leading continuity) while
     // previousNote is kept (for the sustained pitch output).
+    // tie: true is placed on the SUSTAINED event (this position), not the
+    // originator, so toMiniNotation appends `_` and sets struct `f` here.
     if (rhy.tie) {
-      if (events.length > 0) {
-        events[events.length - 1]!.tie = true
-      }
-
       // Advance voice leading even though output sustains
       if (!fig.rest && previousMidi !== null) {
         const theoretical = resolveDegree(fig.degree, pool, previousMidi, voiceStrategy, fig.octaveDown)
@@ -248,7 +246,7 @@ export function resolvePhrase(
         anchor: isAnchor,
         duration: 1,
         velocity: 0.8,
-        tie: false,
+        tie: true,
       })
       emitTrace(debug, { position: i, figureToken: fig, rhythmToken: rhy, harmony: harm, pitchPool: pool, resolvedNote: previousNote ?? null })
       continue

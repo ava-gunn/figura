@@ -112,7 +112,7 @@ The anchor importance shifts to the nearest non-rest played note.
 ```
 notes:    "D4 D4_ A4 B4/2 ~ G4 B3 B3_"
 struct:   "t f t t f t t f"
-velocity: "0.8 0.8 0.8 0.8 0.8 1 0.8 0.8"
+velocity: "0.8 0.8 0.8 0.8 0 1 0.8 0.8"
 ```
 
 Usage:

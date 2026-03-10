@@ -54,14 +54,14 @@ development_status:
   epic-2-retrospective: optional
 
   # Epic 3: Phrase Resolution Pipeline
-  epic-3: in-progress
+  epic-3: done
   3-1-core-phrase-resolution: done
   3-2-lcm-cycling-anchor-on-rest: done
   3-3-debug-mode: done
   epic-3-retrospective: optional
 
   # Epic 4: Strudel Output & Library Validation
-  epic-4: backlog
-  4-1-strudel-mini-notation-output: backlog
-  4-2-public-api-surface-end-to-end-validation: backlog
-  epic-4-retrospective: optional
+  epic-4: done
+  4-1-strudel-mini-notation-output: done
+  4-2-public-api-surface-end-to-end-validation: done
+  epic-4-retrospective: done

@@ -118,18 +118,18 @@ describe("resolvePhrase", () => {
       expect(restEvent.velocity).toBe(0)
     })
 
-    it("sets tie: true on preceding event and sustains pitch on tied position", () => {
+    it("sets tie: true on the sustained position and sustains pitch", () => {
       const figure = [degree(1, true), degree(3)]
       const rhythm = [playToken(), tieToken()]
       const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
 
-      // Position 0: tie: true because position 1 is a tie
-      expect(result.events[0]!.tie).toBe(true)
+      // Position 0: plays normally, tie: false (the originating note)
+      expect(result.events[0]!.tie).toBe(false)
       expect(result.events[0]!.note).toBe("D4")
 
-      // Position 1: sustains D4 (NOT F4), tie: false on the tied position itself
+      // Position 1: sustains D4 (NOT F4), tie: true on the sustained position
       expect(result.events[1]!.note).toBe("D4")
-      expect(result.events[1]!.tie).toBe(false)
+      expect(result.events[1]!.tie).toBe(true)
     })
 
     it("sets duration 0.5 for staccato rhythm", () => {
@@ -153,9 +153,9 @@ describe("resolvePhrase", () => {
       const rhythm = [tieToken(), playToken()]
       const result = resolvePhrase(figure, rhythm, dm7Context(), "melody")
 
-      // Tie at position 0: no previous event to set tie on, no previous note to sustain
+      // Tie at position 0: no previous note to sustain → rest-like, tie: true on sustained pos
       expect(result.events[0]!.note).toBe("~")
-      expect(result.events[0]!.tie).toBe(false)
+      expect(result.events[0]!.tie).toBe(true)
       // Position 1 still resolves normally (first pitched note gets octave 4)
       expect(result.events[1]!.note).toBe("F4")
     })
@@ -445,14 +445,14 @@ describe("resolvePhrase", () => {
       expect(result.type).toBe("melody")
       expect(result.events).toHaveLength(8)
 
-      // Pos 0: D4, degree 1, anchor true, duration 1, velocity 0.8, tie true
+      // Pos 0: D4, degree 1, anchor true, duration 1, velocity 0.8, tie false (originator)
       expect(result.events[0]).toMatchObject({
-        note: "D4", degree: 1, anchor: true, duration: 1, velocity: 0.8, tie: true,
+        note: "D4", degree: 1, anchor: true, duration: 1, velocity: 0.8, tie: false,
       })
 
-      // Pos 1: D4 (tied — sustains D4, not F4), degree 3, anchor false
+      // Pos 1: D4 (tied — sustains D4, not F4), degree 3, anchor false, tie true (sustained)
       expect(result.events[1]).toMatchObject({
-        note: "D4", degree: 3, anchor: false, duration: 1, velocity: 0.8, tie: false,
+        note: "D4", degree: 3, anchor: false, duration: 1, velocity: 0.8, tie: true,
       })
 
       // Pos 2: A4, degree 5, anchor false
@@ -475,14 +475,14 @@ describe("resolvePhrase", () => {
         note: "G4", degree: 1, anchor: true, duration: 1, velocity: 1.0, tie: false,
       })
 
-      // Pos 6: B3 (octave down), degree 7, tie true
+      // Pos 6: B3 (octave down), degree 7, tie false (originator)
       expect(result.events[6]).toMatchObject({
-        note: "B3", degree: 7, anchor: false, duration: 1, velocity: 0.8, tie: true,
+        note: "B3", degree: 7, anchor: false, duration: 1, velocity: 0.8, tie: false,
       })
 
-      // Pos 7: B3 (tied — sustains B3, not C4), degree 1, anchor true
+      // Pos 7: B3 (tied — sustains B3, not C4), degree 1, anchor true, tie true (sustained)
       expect(result.events[7]).toMatchObject({
-        note: "B3", degree: 1, anchor: true, duration: 1, velocity: 0.8, tie: false,
+        note: "B3", degree: 1, anchor: true, duration: 1, velocity: 0.8, tie: true,
       })
     })
   })

@@ -74,7 +74,7 @@ export type ResolvedEvent = {
   anchor:   boolean  // was this the anchor note?
   duration: number   // 1 = full step, 0.5 = staccato, 0 = rest
   velocity: number   // 0.8 = normal, 1.0 = accent, 0 = rest
-  tie:      boolean  // sustain previous note
+  tie:      boolean  // true on the sustained position (tie continuation, not originator)
 }
 
 /**
