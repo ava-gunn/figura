@@ -17,13 +17,10 @@
 //   - Rhythm DSL: play (1), tie (_), staccato (.), rest (~), accent (!)
 //   - Figure DSL: anchor (*), octave-down (-)
 // ============================================================================
-import {
-  parseFigure,
-  parseRhythm,
-  expandProgression,
-  resolvePhrase,
-} from '../packages/core/dist/index.js'
-import { toMiniNotation } from '../packages/strudel/dist/index.js'
+const { parseFigure, parseRhythm, expandProgression, resolvePhrase } =
+  await import('https://cdn.jsdelivr.net/gh/ava-gunn/figura@main/packages/core/dist/index.js')
+const { toMiniNotation } =
+  await import('https://cdn.jsdelivr.net/gh/ava-gunn/figura@main/packages/strudel/dist/index.js')
 
 // --- Harmony ---
 // Define the chord progression. Duration = number of figure/rhythm slots

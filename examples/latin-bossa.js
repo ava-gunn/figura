@@ -20,8 +20,8 @@
 //   - Stepwise melodic motion across chord changes
 // ============================================================================
 
-import { parseFigure, parseRhythm, expandProgression, resolvePhrase } from "@figura/core"
-import { toMiniNotation } from "@figura/strudel"
+const { parseFigure, parseRhythm, expandProgression, resolvePhrase } = await import('https://cdn.jsdelivr.net/gh/ava-gunn/figura@main/packages/core/dist/index.js')
+const { toMiniNotation } = await import('https://cdn.jsdelivr.net/gh/ava-gunn/figura@main/packages/strudel/dist/index.js')
 
 // --- Harmony ---
 const progression = expandProgression({
