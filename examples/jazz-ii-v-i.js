@@ -18,9 +18,9 @@
 //   - Figure DSL: anchor (*), octave-down (-)
 // ============================================================================
 const { parseFigure, parseRhythm, expandProgression, resolvePhrase } =
-  await import('https://cdn.jsdelivr.net/gh/ava-gunn/figura@main/packages/core/dist/index.js')
+  await import('https://cdn.jsdelivr.net/gh/ava-gunn/figura@latest/packages/core/dist/index.js')
 const { toMiniNotation } =
-  await import('https://cdn.jsdelivr.net/gh/ava-gunn/figura@main/packages/strudel/dist/index.js')
+  await import('https://cdn.jsdelivr.net/gh/ava-gunn/figura@latest/packages/strudel/dist/index.js')
 
 // --- Harmony ---
 // Define the chord progression. Duration = number of figure/rhythm slots
